@@ -1,4 +1,4 @@
-import mongoose from 'mongoose';
+const mongoose = require('mongoose');
 
 // function for connecting to mongodb instance
 const connectDB = async (mongoUri) => {
@@ -22,4 +22,4 @@ const disconnectDB = async () => {
     }
 }
 
-export default { connectDB, disconnectDB }
+module.exports = { connectDB, disconnectDB }

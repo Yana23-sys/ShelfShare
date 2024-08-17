@@ -1,5 +1,12 @@
-import dotenv from "dotenv";
-dotenv.config();
+const dotenv = require('dotenv');
+
+const ENV = process.env.NODE_ENV || '';
+
+dotenv.config({
+  path: `${__dirname}/../.env.${ENV}`,
+});
+
+// Extracting env vars
 const mongoUser = process.env.MONGO_USER;
 const mongoPassword = process.env.MONGO_PASSWORD;
 const mongoPort = process.env.MONGO_PORT;
@@ -21,7 +28,7 @@ if (mongoPort) {
 }
 
 
-export default {
+module.exports = {
     server: {
         port: process.env.PORT || 3000
     },

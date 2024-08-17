@@ -1,5 +1,5 @@
-import config from "./config";
-import { connectDB, disconnectDB } from "./db";
+const config = require('./config')
+const { connectDB, disconnectDB } = require('./db')
 
 connectDB(config.mongo.uri)
 
