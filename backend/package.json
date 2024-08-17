@@ -5,7 +5,8 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "NODE_ENV=development nodemon index.js",
-    "start": "node index.js"
+    "start": "node index.js",
+    "seed-local": "mongoimport --uri='mongodb://localhost:27017/shelfshare' --collection=books --file=./data/books.json --jsonArray"
   },
   "keywords": [],
   "author": "",
