@@ -2,9 +2,9 @@
 
 ## How to install local MongoDB
 
-For installing MongoDB on your computer, follow steps outine in [this](https://www.mongodb.com/docs/manual/tutorial/install-mongodb-on-ubuntu/) guide.
+For installing MongoDB on your computer, follow steps outined in [this](https://www.mongodb.com/docs/manual/tutorial/install-mongodb-on-ubuntu/) guide.
 
-Once installed, you can start you local MongoDB instance by running:
+Once installed, you can start your local MongoDB instance by running:
 ```
 sudo service mongod start
 ```
