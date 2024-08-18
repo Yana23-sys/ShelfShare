@@ -1,7 +1,7 @@
 const mongoose = require('mongoose')
 
 // function for connecting to mongodb instance
-const connectDB = async (mongoUri) => {
+const connectToMongo = async (mongoUri) => {
     try {
         await mongoose.connect(mongoUri)
         console.log('MongoDB connected!')
@@ -12,7 +12,7 @@ const connectDB = async (mongoUri) => {
 }
 
 // function for disconnecting from mongodb instance
-const disconnectDB = async () => {
+const disconnectFromMongo = async () => {
     try {
         await mongoose.connection.close()
         console.log('MongoDB disconnected!')
@@ -22,4 +22,4 @@ const disconnectDB = async () => {
     }
 }
 
-module.exports = { connectDB, disconnectDB }
+module.exports = { connectToMongo, disconnectFromMongo }

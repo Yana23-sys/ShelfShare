@@ -1,8 +1,8 @@
 const config = require('./config')
-const { connectDB, disconnectDB } = require('./db')
+const { connectToMongo, disconnectFromMongo } = require('./db/mongo')
 const app = require('./app')
 
-connectDB(config.mongo.uri)
+connectToMongo(config.mongo.uri)
 
 const server = app.listen(config.server.port, () => {
     console.log(`Server is running on port ${config.server.port}`)
@@ -14,7 +14,7 @@ const gracefulShutdown = () => {
     console.log('Received termination signal, shutting down...')
     server.close(() => {
         console.log('Server is now closed')
-        disconnectDB()
+        disconnectFromMongo()
     })
 }
 process.on('SIGINT', gracefulShutdown) 

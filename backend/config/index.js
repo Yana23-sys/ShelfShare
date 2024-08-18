@@ -1,16 +1,17 @@
 const dotenv = require('dotenv');
 
-const ENV = process.env.NODE_ENV || '';
-
-dotenv.config({
-  path: `${__dirname}/../.env${ENV ? '.' + ENV : ''}`,
-});
+const ENV = process.env.NODE_ENV;
+if (ENV) {
+    const configFile = `${__dirname}/../.env.${ENV}`
+    console.log(`Using config file ${configFile}`);
+    dotenv.config({ path: configFile });
+}
 
 // Extracting env vars
 const mongoUser = process.env.MONGO_USER;
 const mongoPassword = process.env.MONGO_PASSWORD;
 const mongoPort = process.env.MONGO_PORT;
-const mongoDB = process.env.MONGO_DB;
+const mongoDB = process.env.MONGO_DB || 'shelfshare';
 
 // Building mongodb connection string depending on available env vars
 let mongoUri = process.env.MONGO_HOST
