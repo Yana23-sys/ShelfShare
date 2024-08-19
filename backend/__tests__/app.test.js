@@ -4,6 +4,7 @@ const config = require('../config')
 const { connectToMongo, disconnectFromMongo } = require('../db/mongo')
 const request = require('supertest')
 const app = require('../app')
+const endpoints = require('../controllers/endpoints')
 
 beforeEach(() => {
     return seedMongoDB(data);
@@ -23,7 +24,18 @@ describe('invalid endpoint', () => {
         .get('/api/not-a-route')
         .expect(404)
         .then(response => {
-            expect(response.body.msg).toBe('path not found')
+            expect(response.body.message).toBe('path not found')
+        })
+    })
+})
+
+describe('/api', () => {
+    test('GET: responds with a json object with all available endpoints', () => {
+        return request(app)
+        .get('/api')
+        .expect(200)
+        .then(({ body}) => {
+            expect(body.endpoints).toEqual(endpoints)
         })
     })
 })
