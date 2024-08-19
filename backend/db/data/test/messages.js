@@ -1,4 +1,4 @@
-[
+module.exports = [
   {
     message_id: "M001",
     body: "Thanks for the swap! Can't wait to read it.",

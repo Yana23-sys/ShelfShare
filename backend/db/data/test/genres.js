@@ -1,4 +1,4 @@
-[
+module.exports = [
   {
     genre_id: "G001",
     name: "Fiction",
