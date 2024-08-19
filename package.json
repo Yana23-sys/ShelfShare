@@ -1,9 +1,13 @@
 {
   "name": "shelfshare",
   "version": "1.0.0",
-  "main": "index.js",
+  "workspaces": [
+    "backend",
+    "frontend"
+  ],
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "install": "npm install --workspaces",
+    "prepare": "husky install"
   },
   "keywords": [],
   "author": "",
