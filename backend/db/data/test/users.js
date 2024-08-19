@@ -2,7 +2,7 @@ module.exports = [
   {
     username: "danleonard23",
     name: "Daniel Leonard",
-    avatar: "https://api.dicebear.com/9.x/adventurer-neutral/svg?",
+    avatar: "https://api.dicebear.com/9.x/adventurer-neutral/svg",
     email: "alice@example.com", // to be updated
     password: "hashedpassword123",
     location: "New York, USA",
@@ -10,7 +10,7 @@ module.exports = [
   {
     username: "BelMo92",
     name: "Belhaj Mohamed",
-    avatar: "ahttps://api.dicebear.com/9.x/adventurer/svg",
+    avatar: "https://api.dicebear.com/9.x/adventurer/svg",
     email: "belhadj.mohamad@gmail.com",
     password: "hashedpassword456",
     location: "London, UK",
