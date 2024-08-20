@@ -1,5 +1,5 @@
 const config = require('./config')
-const { connectToMongo, disconnectFromMongo } = require('./db/mongo')
+const { connectToMongo, disconnectFromMongo } = require('./db/mongodb-connection')
 const app = require('./app')
 
 connectToMongo(config.mongo.uri)
