@@ -14,12 +14,24 @@ const bookSchema = new mongoose.Schema({
 const Book = mongoose.model('Book', bookSchema);
 
 const findAllBooks = async () => {
-    try {
-      const books = await Book.find();
-      return books;
-    } catch (err) {
-      console.error(err);
-    }
+  try {
+    const books = await Book.find()
+    return books
+  } catch (err) {
+    console.error('Error in findAllBooks:', err)
+    throw err
+  }
 }
 
-module.exports = { findAllBooks }
+const insertBook = (newBook) => {
+
+  const book = new Book(newBook)
+  return book.save()
+    .then(savedBook => savedBook)
+    .catch(err => {
+      console.error('Error inserting book:', err)
+      throw err
+    })
+}
+
+module.exports = { findAllBooks, insertBook }

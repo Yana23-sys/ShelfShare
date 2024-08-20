@@ -62,5 +62,70 @@ describe('/api/books', () => {
             })
         })
     })
+
+    describe('POST', () => {
+        test('201: creates a new book', () => {
+            const newBook = {
+                title: "TEST BOOK",
+                author: "AUTHOR",
+                genre: "Fantasy",
+                description:
+                  "The prequel to The Lord of the Rings, following Bilbo Baggins' journey.",
+                publication_year: "1937",
+                posted_date: "2021",
+                username: "user03",
+                cover_image_url: "https://i.ibb.co/PM0BQcf/The-Hobbit.jpg"
+            }
+
+            return request(app)
+            .post('/api/books')
+            .send(newBook)
+            .expect(201)
+            .then(({ body }) => {
+                expect(body.book).toMatchObject(newBook)
+            })
+        })
+
+        test('cover_image_url will default if not provided', () => {
+            const newBook = {
+                title: "TEST BOOK (without img)",
+                author: "AUTHOR",
+                genre: "Fantasy",
+                description:
+                  "The prequel to The Lord of the Rings, following Bilbo Baggins' journey.",
+                publication_year: "1937",
+                posted_date: "2021",
+                username: "user03"
+            }
+
+            return request(app)
+            .post('/api/books')
+            .send(newBook)
+            .expect(201)
+            .then(({ body }) => {
+                expect(body.book.cover_image_url).toBe('https://media.istockphoto.com/id/483822100/vector/closed-old-book-with-a-red-bookmark.jpg?s=612x612&w=0&k=20&c=OqF55jpQv2EOO1_Ivwbx2rgFFtw1RLCE5DWF93IR8Ic=')
+            })
+        })
+
+        test('400: returns error if missing required fields', () => {
+            const newBook = {
+                author: "AUTHOR",
+                genre: "Fantasy",
+                description:
+                  "The prequel to The Lord of the Rings, following Bilbo Baggins' journey.",
+                publication_year: "1937",
+                posted_date: "2021",
+                username: "user03"
+            }
+
+            return request(app)
+            .post('/api/books')
+            .send(newBook)
+            .expect(400)
+            .then(({ body }) => {
+                expect(body.message).toBe('Please provide all required fields')
+            })
+        })
+    })
 })
 
