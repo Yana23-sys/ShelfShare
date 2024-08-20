@@ -5,7 +5,7 @@
   "scripts": {
     "test": "jest",
     "dev": "NODE_ENV=development nodemon index.js",
-    "seed-dev": "NODE_ENV=development node db/seed/run.js",
+    "seed-dev": "NODE_ENV=development node db/seed/run-seed.js",
     "start": "node index.js"
   },
   "keywords": [],

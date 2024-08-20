@@ -1,5 +1,5 @@
 const data = require('./data')
-const { seedMongoDB } = require('./index')
+const { seedMongoDB } = require('./seed')
 
 seedMongoDB(data)
 .then(() => {
