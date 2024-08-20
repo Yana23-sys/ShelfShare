@@ -1,4 +1,4 @@
-import mongoose from "mongoose";
+const mongoose = require('mongoose')
 
 const userSchema = new mongoose.Schema({
   username: { type: String, required: true, unique: true },
@@ -11,4 +11,8 @@ const userSchema = new mongoose.Schema({
 
 const User = mongoose.model('User', userSchema);
 
-module.exports = User;
+const findUserByName = (username) => {
+  return User.findOne({ username })
+}
+
+module.exports = { User, findUserByName }

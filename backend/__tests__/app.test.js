@@ -6,16 +6,16 @@ const request = require('supertest')
 const app = require('../app')
 const endpoints = require('../controllers/endpoints')
 
-beforeEach(() => {
-    return seedMongoDB(data);
+beforeEach( async () => {
+    await seedMongoDB(data);
 })
 
-beforeAll(() => {
-    return connectToMongo(config.mongo.uri)
+beforeAll( async () => {
+    await connectToMongo(config.mongo.uri)
 })
 
-afterAll(() => {
-    return disconnectFromMongo()
+afterAll( async () => {
+    await disconnectFromMongo()
 })
 
 describe('invalid endpoint', () => {
@@ -56,7 +56,7 @@ describe('/api/books', () => {
                     expect(book).toHaveProperty('description')
                     expect(book).toHaveProperty('publication_year')
                     expect(book).toHaveProperty('posted_date')
-                    expect(book).toHaveProperty('username')
+                    expect(book).toHaveProperty('user')
                     expect(book).toHaveProperty('cover_image_url')
                 })
             })
@@ -73,7 +73,7 @@ describe('/api/books', () => {
                   "The prequel to The Lord of the Rings, following Bilbo Baggins' journey.",
                 publication_year: "1937",
                 posted_date: "2021",
-                username: "user03",
+                username: "yana53674808",
                 cover_image_url: "https://i.ibb.co/PM0BQcf/The-Hobbit.jpg"
             }
 
@@ -95,7 +95,7 @@ describe('/api/books', () => {
                   "The prequel to The Lord of the Rings, following Bilbo Baggins' journey.",
                 publication_year: "1937",
                 posted_date: "2021",
-                username: "user03"
+                username: "yana53674808"
             }
 
             return request(app)

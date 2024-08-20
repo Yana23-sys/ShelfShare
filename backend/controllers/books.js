@@ -1,4 +1,6 @@
 const { findAllBooks, insertBook } = require('../models/books')
+const { findUserByName } = require('../models/users')
+const { findGenreByName } = require('../models/genres')
 
 // if user has not provided any img -> default img cover url
 const DEFAULT_COVER_IMAGE_URL = 'https://media.istockphoto.com/id/483822100/vector/closed-old-book-with-a-red-bookmark.jpg?s=612x612&w=0&k=20&c=OqF55jpQv2EOO1_Ivwbx2rgFFtw1RLCE5DWF93IR8Ic='
@@ -15,19 +17,31 @@ exports.getAllBooks = (req, res, next) => {
     });
 };
 
-exports.postBook = (req, res, next) => {
-    const { title, author, genre, description, publication_year, posted_date, username, cover_image_url } = req.body
+exports.postBook = async (req, res, next) => {
+    const { title, author, genre: genreName, description, publication_year, posted_date, username, cover_image_url } = req.body
 
-    if (!title || !author || !genre || !username) {
+    if (!title || !author || !genreName || !username) {
         return res.status(400).send({ message: 'Please provide all required fields' })
+    }
+
+    const user = await findUserByName(username)
+    if (!user) {
+        return res.status(404).send({ message: `User '${username}' not found` })
+    }
+    const genre = await findGenreByName(genreName)
+    if (!genre) {
+        return res.status(404).send({ message: `Genre '${genre}' not found` })
     }
 
     const coverImgUrl = cover_image_url || DEFAULT_COVER_IMAGE_URL
 
-    const newBook = { title, author, genre, description, publication_year, posted_date, username, cover_image_url: coverImgUrl }
+    const newBook = { title, author, description, publication_year, posted_date, cover_image_url: coverImgUrl, user: user._id, genre: genre._id }
 
-    insertBook(newBook)
-    .then(book => res.status(201).send({ book }))
+    return insertBook(newBook)
+    .then(insertedBook => {
+        const book = {...insertedBook.toObject(), username, genre: genreName}
+        res.status(201).send({ book })
+    })
     .catch((error) => {
         console.error('Error inserting book:', error)
         next(error)
