@@ -47,13 +47,17 @@ describe('/api/books', () => {
             .get('/api/books')
             .expect(200)
             .then(( { body } ) => {
-                expect(body.books).toHaveLength(2)
+                expect(body.books).toHaveLength(10)
 
                 body.books.forEach (book => {
                     expect(book).toHaveProperty('title')
                     expect(book).toHaveProperty('author')
                     expect(book).toHaveProperty('genre')
-                    expect(book).toHaveProperty('available')
+                    expect(book).toHaveProperty('description')
+                    expect(book).toHaveProperty('publication_year')
+                    expect(book).toHaveProperty('posted_date')
+                    expect(book).toHaveProperty('username')
+                    expect(book).toHaveProperty('cover_image_url')
                 })
             })
         })
