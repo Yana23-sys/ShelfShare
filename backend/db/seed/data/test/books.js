@@ -7,7 +7,7 @@ module.exports = [
     description:
       "A classic novel depicting racial injustice in the American South.",
     publication_year: "1960",
-    posted_date: "14/12/2023",
+    posted_date: "2023-12-14",
     user: "danleonard23",
     cover_image_url: "https://i.ibb.co/2cXXyXt/To-Kill-a-Mockingbird.jpg",
   },

@@ -78,7 +78,7 @@ describe("/api/books", () => {
         description:
           "The prequel to The Lord of the Rings, following Bilbo Baggins' journey.",
         publication_year: "1937",
-        posted_date: "01/01/2021", // Expected date in day/month/year format
+        posted_date: "2021-01-01", // Expected date in day/month/year format
         username: "yana53674808",
         cover_image_url: "https://i.ibb.co/PM0BQcf/The-Hobbit.jpg",
       };
@@ -198,7 +198,11 @@ describe("/api/books/:bookId", () => {
           "A classic novel depicting racial injustice in the American South."
         );
         expect(body.book).toHaveProperty("publication_year", "1960");
-        expect(body.book).toHaveProperty("posted_date", "14/12/2023");
+        expect(body.book).toHaveProperty(
+          "posted_date",
+          "2023-12-14T00:00:00.000Z"
+        );
+
         expect(body.book).toHaveProperty("user");
         expect(body.book.user).toHaveProperty("username", "danleonard23");
 
