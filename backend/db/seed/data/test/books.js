@@ -7,7 +7,7 @@ module.exports = [
     description:
       "A classic novel depicting racial injustice in the American South.",
     publication_year: "1960",
-    posted_date: "2023",
+    posted_date: "14/12/2023",
     user: "danleonard23",
     cover_image_url: "https://i.ibb.co/2cXXyXt/To-Kill-a-Mockingbird.jpg",
   },
@@ -18,7 +18,7 @@ module.exports = [
     genre: "Dystopian",
     description: "A dystopian novel portraying a totalitarian society.",
     publication_year: "1949",
-    posted_date: "2024",
+    posted_date: "01/02/2024",
     user: "BelMo92",
     cover_image_url: "https://i.ibb.co/yFdkbP0/1984.jpg",
   },
@@ -30,7 +30,7 @@ module.exports = [
     description:
       "A classic novel exploring themes of love, marriage, and social norms.",
     publication_year: "1813",
-    posted_date: "2023",
+    posted_date: "06/11/2023",
     user: "geraintsjj",
     cover_image_url: "https://i.ibb.co/ky7072g/Pride-and-Prejudice.jpg",
   },
@@ -42,7 +42,7 @@ module.exports = [
     description:
       "A tale of the American Dream, wealth, and love during the Roaring Twenties.",
     publication_year: "1925",
-    posted_date: "2023",
+    posted_date: "02/04/2023",
     user: "yana53674808",
     cover_image_url: "https://i.ibb.co/x675F7C/The-Great-Gatsby.jpg",
   },
@@ -54,7 +54,7 @@ module.exports = [
     description:
       "The epic tale of Captain Ahab's obsession with the white whale.",
     publication_year: "1851",
-    posted_date: "2023",
+    posted_date: "17/11/2023",
     user: "anitacampbell17",
     cover_image_url: "https://i.ibb.co/nsCbcGV/Moby-Dick.jpg",
   },
@@ -66,7 +66,7 @@ module.exports = [
     description:
       "An epic fantasy saga about the quest to destroy the One Ring.",
     publication_year: "1954",
-    posted_date: "2019",
+    posted_date: "02/04/2019",
     user: "BelMo92",
     cover_image_url: "https://i.ibb.co/txj7bzh/The-Lord-of-the-Rings.jpg",
   },
@@ -78,7 +78,7 @@ module.exports = [
     description:
       "A classic coming-of-age novel following Holden Caulfield's journey.",
     publication_year: "1951",
-    posted_date: "2015",
+    posted_date: "06/08/2015",
     user: "danleonard23",
     cover_image_url: "https://i.ibb.co/x5NJztZ/The-Catcher-in-the-Rye.jpg",
   },
@@ -90,7 +90,7 @@ module.exports = [
     description:
       "The prequel to The Lord of the Rings, following Bilbo Baggins' journey.",
     publication_year: "1937",
-    posted_date: "2021",
+    posted_date: "04/09/2021",
     user: "geraintsjj",
     cover_image_url: "https://i.ibb.co/PM0BQcf/The-Hobbit.jpg",
   },
@@ -102,7 +102,7 @@ module.exports = [
     description:
       "A multi-generational saga of the Buendía family in the fictional town of Macondo.",
     publication_year: "1967",
-    posted_date: "2020",
+    posted_date: "03/05/2020",
     user: "yana53674808",
     cover_image_url:
       "https://i.ibb.co/g6Zfy0c/One-Hundred-Years-of-Solitude.jpg",
@@ -115,7 +115,7 @@ module.exports = [
     description:
       "A monumental work depicting the events of Russian society during the Napoleonic era.",
     publication_year: "1869",
-    posted_date: "2024",
+    posted_date: "09/04/2024",
     user: "anitacampbell17",
     cover_image_url: "https://i.ibb.co/h1K0ZXq/War-and-Peace.jpg",
   },

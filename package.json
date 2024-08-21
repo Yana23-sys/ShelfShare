@@ -15,5 +15,8 @@
   "description": "",
   "devDependencies": {
     "husky": "^9.1.4"
+  },
+  "dependencies": {
+    "moment": "^2.30.1"
   }
 }
