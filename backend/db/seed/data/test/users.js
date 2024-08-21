@@ -27,7 +27,7 @@ module.exports = [
       username: "yana53674808",
       name: "Yana",
       avatar: "https://api.dicebear.com/9.x/adventurer/svg",
-      email: "diana@example.com", // to be updated
+      email: "yana@example.com", // to be updated
       password: "hashedpassword101",
       location: "Toronto, Canada",
     },
@@ -35,7 +35,7 @@ module.exports = [
       username: "geraintsjj",
       name: "Geraint",
       avatar: "https://api.dicebear.com/9.x/big-smile/svg",
-      email: "diana@example.com", // to be updated
+      email: "geraint@example.com", // to be updated
       password: "hashedpassword120",
       location: "Toronto, Canada",
     }

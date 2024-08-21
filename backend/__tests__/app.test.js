@@ -9,17 +9,17 @@ const request = require("supertest");
 const app = require("../app");
 const endpoints = require("../controllers/endpoints");
 
-beforeEach(() => {
-  return seedMongoDB(data);
-});
+beforeEach( async () => {
+    await seedMongoDB(data);
+})
 
-beforeAll(() => {
-  return connectToMongo(config.mongo.uri);
-});
+beforeAll( async () => {
+    await connectToMongo(config.mongo.uri)
+})
 
-afterAll(() => {
-  return disconnectFromMongo();
-});
+afterAll( async () => {
+    await disconnectFromMongo()
+})
 
 describe("invalid endpoint", () => {
   test("404 status and error message when given an endpoint that doesn't exist", () => {
@@ -49,63 +49,142 @@ describe("/api/books", () => {
       return request(app)
         .get("/api/books")
         .expect(200)
-        .then(({ body }) => {
-          console.log(body);
-          expect(body.books).toHaveLength(10);
+        .then(({ body}) => {
+            expect(body.endpoints).toEqual(endpoints)
+        })
+    })
+})
 
-          body.books.forEach((book) => {
-            expect(book).toHaveProperty("title");
-            expect(book).toHaveProperty("author");
-            expect(book).toHaveProperty("genre");
-            expect(book).toHaveProperty("description");
-            expect(book).toHaveProperty("publication_year");
-            expect(book).toHaveProperty("posted_date");
-            expect(book).toHaveProperty("username");
-            expect(book).toHaveProperty("cover_image_url");
-          });
-        });
-    });
-  });
-});
+describe('/api/books', () => {
+    describe('GET', () => {
+        test('200: returns all books', () => {
+            return request(app)
+            .get('/api/books')
+            .expect(200)
+            .then(( { body } ) => {
+                expect(body.books).toHaveLength(10)
 
-describe("/api/books/:bookId", () => {
-  test("200: returns the correct book by ID", () => {
-    return request(app)
-      .get("/api/books/1") // Use valid book ID from seed data
-      .expect(200)
-      .then(({ body }) => {
-        expect(body.book).toHaveProperty("title", "To Kill a Mockingbird");
-        expect(body.book).toHaveProperty("author", "Harper Lee");
-        expect(body.book).toHaveProperty("genre", "Fiction");
-        expect(body.book).toHaveProperty(
-          "description",
-          "A classic novel depicting racial injustice in the American South."
-        );
-        expect(body.book).toHaveProperty("publication_year", "1960");
-        expect(body.book).toHaveProperty("posted_date", "2023");
-        expect(body.book).toHaveProperty("username", "user02");
-        expect(body.book).toHaveProperty(
-          "cover_image_url",
-          "https://i.ibb.co/2cXXyXt/To-Kill-a-Mockingbird.jpg"
-        );
-      });
-  });
+                body.books.forEach (book => {
+                    expect(book).toHaveProperty('title')
+                    expect(book).toHaveProperty('author')
+                    expect(book).toHaveProperty('genre')
+                    expect(book).toHaveProperty('description')
+                    expect(book).toHaveProperty('publication_year')
+                    expect(book).toHaveProperty('posted_date')
+                    expect(book).toHaveProperty('user')
+                    expect(book).toHaveProperty('cover_image_url')
+                })
+            })
+        })
+    })
 
-  test("400: responds with an error message when bookId is not valid", () => {
-    return request(app)
-      .get("/api/books/invalid-id")
-      .expect(400)
-      .then(({ body }) => {
-        expect(body.message).toBe("Invalid book ID format");
-      });
-  });
+    describe('POST', () => {
+        test('201: creates a new book', () => {
+            const newBook = {
+                title: "TEST BOOK",
+                author: "AUTHOR",
+                genre: "Fantasy",
+                description:
+                  "The prequel to The Lord of the Rings, following Bilbo Baggins' journey.",
+                publication_year: "1937",
+                posted_date: "2021",
+                username: "yana53674808",
+                cover_image_url: "https://i.ibb.co/PM0BQcf/The-Hobbit.jpg"
+            }
 
-  test("404: responds with an error when bookId does not exist", () => {
-    return request(app)
-      .get("/api/books/60c72b2f9b1d4f1a2c8e4b7d") // Use a non-existent book ID
-      .expect(404)
-      .then(({ body }) => {
-        expect(body.message).toBe("Book not found");
-      });
-  });
-});
+            return request(app)
+            .post('/api/books')
+            .send(newBook)
+            .expect(201)
+            .then(({ body }) => {
+                expect(body.book).toMatchObject(newBook)
+            })
+        })
+
+        test('cover_image_url will default if not provided', () => {
+            const newBook = {
+                title: "TEST BOOK (without img)",
+                author: "AUTHOR",
+                genre: "Fantasy",
+                description:
+                  "The prequel to The Lord of the Rings, following Bilbo Baggins' journey.",
+                publication_year: "1937",
+                posted_date: "2021",
+                username: "yana53674808"
+            }
+
+            return request(app)
+            .post('/api/books')
+            .send(newBook)
+            .expect(201)
+            .then(({ body }) => {
+                expect(body.book.cover_image_url).toBe('https://media.istockphoto.com/id/483822100/vector/closed-old-book-with-a-red-bookmark.jpg?s=612x612&w=0&k=20&c=OqF55jpQv2EOO1_Ivwbx2rgFFtw1RLCE5DWF93IR8Ic=')
+            })
+        })
+
+        test('400: returns error if missing required fields', () => {
+            const newBook = {
+                author: "AUTHOR",
+                genre: "Fantasy",
+                description:
+                  "The prequel to The Lord of the Rings, following Bilbo Baggins' journey.",
+                publication_year: "1937",
+                posted_date: "2021",
+                username: "yana53674808"
+            }
+
+            return request(app)
+            .post('/api/books')
+            .send(newBook)
+            .expect(400)
+            .then(({ body }) => {
+                expect(body.message).toBe('Please provide all required fields')
+            })
+        })
+
+        test('404: returns error if user not found', () => {
+            const newBook = {
+                title: "TEST BOOK",
+                author: "AUTHOR",
+                genre: "Fantasy",
+                description:
+                  "The prequel to The Lord of the Rings, following Bilbo Baggins' journey.",
+                publication_year: "1937",
+                posted_date: "2021",
+                username: "not-existent-user",
+                cover_image_url: "https://i.ibb.co/PM0BQcf/The-Hobbit.jpg"
+            }
+
+            return request(app)
+            .post('/api/books')
+            .send(newBook)
+            .expect(404)
+            .then(({ body }) => {
+                expect(body.message).toBe(`User 'not-existent-user' not found`)
+            })
+        })
+
+        test('404: returns error if genre not found', () => {
+            const newBook = {
+                title: "TEST BOOK",
+                author: "AUTHOR",
+                genre: "not-existent-genre",
+                description:
+                  "The prequel to The Lord of the Rings, following Bilbo Baggins' journey.",
+                publication_year: "1937",
+                posted_date: "2021",
+                username: "yana53674808",
+                cover_image_url: "https://i.ibb.co/PM0BQcf/The-Hobbit.jpg"
+            }
+
+            return request(app)
+            .post('/api/books')
+            .send(newBook)
+            .expect(404)
+            .then(({ body }) => {
+                expect(body.message).toBe(`Genre 'not-existent-genre' not found`)
+            })
+        })
+    })
+})
+

@@ -1,61 +1,57 @@
-const config = require("../../config");
-const { MongoClient } = require("mongodb");
-const booksData = require("./data/test/books");
-const usersData = require("./data/test/users");
-const genresData = require("./data/test/genres");
-const messagesData = require("./data/test/messages");
-const swapCollectionsData = require("./data/test/swapCollections");
+const config = require('../../config')
+const { MongoClient } = require('mongodb')
 
-const client = new MongoClient(config.mongo.uri);
+const client = new MongoClient(config.mongo.uri)
 
-const validateArray = (data, name) => {
-  if (!Array.isArray(data)) {
-    throw new Error(`${name} must be an array`);
-  }
-  return data;
-};
-
-const seedCollection = async (collection, data, name) => {
-  const validData = validateArray(data, name);
-  if (validData.length === 0) {
-    console.log(`No documents to insert into the ${name} collection.`);
-    return;
-  }
-
-  console.log(`Deleting all documents in the ${name} collection...`);
-  await collection.deleteMany({});
-  console.log(`Inserting documents into the ${name} collection...`);
-  const result = await collection.insertMany(validData);
-  console.log(
-    `Inserted ${result.insertedCount} documents into the ${name} collection`
-  );
-};
-
-const seedMongoDB = async ({
-  books = [],
-  users = [],
-  genres = [],
-  messages = [],
-  swapCollections = [],
-}) => {
+const seedMongoDB = async ({books, users, genres, messages}) => {
   try {
-    console.log(`Connecting to ${config.mongo.uri}...`);
-    await client.connect(); // Ensure the client is connected
-
-    const db = client.db(config.mongo.dbName);
-
-    // Seed each collection
-    await seedCollection(db.collection("books"), books, "Books");
-    await seedCollection(db.collection("users"), users, "Users");
-    await seedCollection(db.collection("genres"), genres, "Genres");
-    await seedCollection(db.collection("messages"), messages, "Messages");
-    await seedCollection(
-      db.collection("swapcollections"),
-      swapCollections,
-      "SwapCollections"
-    );
-
-    console.log("Database seeding complete.");
+    console.log(`Connecting to ${config.mongo.uri}...`)
+    await client.connect();
+    const db = client.db(config.mongo.dbName)
+    
+    // Seed users
+    const usersCollection = db.collection('users')
+    console.log('Deleting all documents in the users collection...')
+    await usersCollection.deleteMany({})
+    console.log('Inserting documents into the users collection...')
+    await usersCollection.insertMany(users)
+    const newUsers = await usersCollection.find().toArray()
+    console.log(`Inserted ${users.length} documents into the users collection`)
+    
+    // Seed genres
+    const genresCollection = db.collection('genres')
+    console.log('Deleting all documents in the genres collection...')
+    await genresCollection.deleteMany({})
+    console.log('Inserting documents into the genres collection...')
+    await genresCollection.insertMany(genres)
+    const newGenres = await genresCollection.find().toArray()
+    console.log(`Inserted ${genres.length} documents into the genres collection`)
+    
+    // Seed books
+    const collection = db.collection('books')
+    console.log('Deleting all documents in the books collection...')
+    await collection.deleteMany({})
+    console.log('Inserting documents into the books collection...')
+    const genresByName = new Map(newGenres.map(genre => [genre.name, genre]))
+    const usersByUsername = new Map(newUsers.map(user => [user.username, user]))
+    const booksToInsert = books.map(book => {
+      const genreId = genresByName.get(book.genre)._id
+      const userId = usersByUsername.get(book.user)._id
+      return { ...book, genre: genreId, user: userId }
+    })
+    const result = await collection.insertMany(booksToInsert)
+    console.log(`Inserted ${result.insertedCount} documents into the books collection`)
+ 
+    // Seed messages
+    const messagesCollection = db.collection('messages')
+    console.log('Deleting all documents in the messages collection...')
+    await messagesCollection.deleteMany({})
+    console.log('Inserting documents into the messages collection...')
+    await messagesCollection.insertMany(messages)
+    console.log(`Inserted ${messages.length} documents into the messages collection`)
+    
+    
+    console.log('Database seeding complete.')
   } catch (err) {
     console.error("Error during database seeding:", err);
   } finally {
