@@ -1,22 +1,13 @@
-import mongoose from "mongoose"
+const mongoose = require('mongoose')
 
 const genreSchema = new mongoose.Schema({
-  genre_id: { type: String, required: true, unique: true },
-  name: {
-    type: String,
-    required: true,
-    enum: [
-      "Fiction",
-      "Non-Fiction",
-      "Drama",
-      "Romance",
-      "Fantasy/Magic",
-      "Horror",
-      "Historic",
-    ],
-  },
+  name: { type: String, required: true, unique: true }
 })
 
 const Genre = mongoose.model('Genre', genreSchema)
 
-module.exports = Genre
+const findGenreByName = (name) => {
+  return Genre.findOne({ name })
+}
+
+module.exports = { Genre, findGenreByName }
