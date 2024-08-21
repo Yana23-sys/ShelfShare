@@ -115,7 +115,7 @@ describe('/api/books', () => {
                   "The prequel to The Lord of the Rings, following Bilbo Baggins' journey.",
                 publication_year: "1937",
                 posted_date: "2021",
-                username: "user03"
+                username: "yana53674808"
             }
 
             return request(app)
@@ -124,6 +124,50 @@ describe('/api/books', () => {
             .expect(400)
             .then(({ body }) => {
                 expect(body.message).toBe('Please provide all required fields')
+            })
+        })
+
+        test('404: returns error if user not found', () => {
+            const newBook = {
+                title: "TEST BOOK",
+                author: "AUTHOR",
+                genre: "Fantasy",
+                description:
+                  "The prequel to The Lord of the Rings, following Bilbo Baggins' journey.",
+                publication_year: "1937",
+                posted_date: "2021",
+                username: "not-existent-user",
+                cover_image_url: "https://i.ibb.co/PM0BQcf/The-Hobbit.jpg"
+            }
+
+            return request(app)
+            .post('/api/books')
+            .send(newBook)
+            .expect(404)
+            .then(({ body }) => {
+                expect(body.message).toBe(`User 'not-existent-user' not found`)
+            })
+        })
+
+        test('404: returns error if genre not found', () => {
+            const newBook = {
+                title: "TEST BOOK",
+                author: "AUTHOR",
+                genre: "not-existent-genre",
+                description:
+                  "The prequel to The Lord of the Rings, following Bilbo Baggins' journey.",
+                publication_year: "1937",
+                posted_date: "2021",
+                username: "yana53674808",
+                cover_image_url: "https://i.ibb.co/PM0BQcf/The-Hobbit.jpg"
+            }
+
+            return request(app)
+            .post('/api/books')
+            .send(newBook)
+            .expect(404)
+            .then(({ body }) => {
+                expect(body.message).toBe(`Genre 'not-existent-genre' not found`)
             })
         })
     })

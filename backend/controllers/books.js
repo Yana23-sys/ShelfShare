@@ -30,7 +30,7 @@ exports.postBook = async (req, res, next) => {
     }
     const genre = await findGenreByName(genreName)
     if (!genre) {
-        return res.status(404).send({ message: `Genre '${genre}' not found` })
+        return res.status(404).send({ message: `Genre '${genreName}' not found` })
     }
 
     const coverImgUrl = cover_image_url || DEFAULT_COVER_IMAGE_URL
@@ -39,6 +39,7 @@ exports.postBook = async (req, res, next) => {
 
     return insertBook(newBook)
     .then(insertedBook => {
+        // returned type is not an object -> parse it to obj using toObject()
         const book = {...insertedBook.toObject(), username, genre: genreName}
         res.status(201).send({ book })
     })
