@@ -43,17 +43,6 @@ describe("/api", () => {
   });
 });
 
-describe("/api/books", () => {
-  describe("GET", () => {
-    test("200: returns all books", () => {
-      return request(app)
-        .get("/api/books")
-        .expect(200)
-        .then(({ body}) => {
-            expect(body.endpoints).toEqual(endpoints)
-        })
-    })
-})
 
 describe('/api/books', () => {
     describe('GET', () => {
@@ -187,4 +176,3 @@ describe('/api/books', () => {
         })
     })
 })
-
