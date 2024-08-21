@@ -1,6 +1,4 @@
 const mongoose = require('mongoose')
-const { Genre } = require('./genres')
-const { User } = require('./users')
 const Schema = mongoose.Schema
 
 const bookSchema = new mongoose.Schema({
@@ -14,11 +12,7 @@ const bookSchema = new mongoose.Schema({
     cover_image_url: { type: String },
 });
 
-// Ensure that `_id` is not required or is explicitly handled
-bookSchema.index({ id: 1 }, { unique: true });
-
 const Book = mongoose.model("Book", bookSchema);
-
 
 // Mongoose .populate() method to automatically replace the references with the actual documents from the genres and users collections
 const findAllBooks = () => {
@@ -46,14 +40,14 @@ const insertBook = (newBook) => {
     })
 }
 
-const findBookById = async (id) => {
-  try {
-    const book = await Book.findOne({ _id: id });
-    return book;
-  } catch (err) {
-    console.error("Error fetching book by Id:", err);
-    throw err;
-  }
-}
+const findBookById = (id) => {
+    return Book.findById(id)
+    .populate('genre', 'name') 
+    .populate('user', 'username')
+    .catch(err => {
+      console.error("Error fetching book by Id:", err)
+      throw err
+    })
+};
 
-module.exports = { findAllBooks, insertBook }
+module.exports = { findAllBooks, insertBook, findBookById }

@@ -8,6 +8,9 @@ const seedCollection = async (db, data, name) => {
   console.log(`Deleting all documents in the ${name} collection...`);
   await collection.deleteMany({});
   console.log(`Inserting documents into the ${name} collection...`);
+  if (data.length === 0) {
+    return []
+  }
   const result = await collection.insertMany(data);
   console.log(
     `Inserted ${result.insertedCount} documents into the ${name} collection`
