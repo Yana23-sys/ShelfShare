@@ -1,5 +1,6 @@
 module.exports = [
   {
+    id: 1,
     title: "To Kill a Mockingbird",
     author: "Harper Lee",
     genre: "Fiction",
@@ -11,6 +12,7 @@ module.exports = [
     cover_image_url: "https://i.ibb.co/2cXXyXt/To-Kill-a-Mockingbird.jpg",
   },
   {
+    id: 2,
     title: "1984",
     author: "George Orwell",
     genre: "Dystopian",
@@ -21,6 +23,7 @@ module.exports = [
     cover_image_url: "https://i.ibb.co/yFdkbP0/1984.jpg",
   },
   {
+    id: 3,
     title: "Pride and Prejudice",
     author: "Jane Austen",
     genre: "Romance",
@@ -32,6 +35,7 @@ module.exports = [
     cover_image_url: "https://i.ibb.co/ky7072g/Pride-and-Prejudice.jpg",
   },
   {
+    id: 4,
     title: "The Great Gatsby",
     author: "F. Scott Fitzgerald",
     genre: "Fiction",
@@ -43,6 +47,7 @@ module.exports = [
     cover_image_url: "https://i.ibb.co/x675F7C/The-Great-Gatsby.jpg",
   },
   {
+    id: 5,
     title: "Moby-Dick",
     author: "Herman Melville",
     genre: "Fiction",
@@ -54,6 +59,7 @@ module.exports = [
     cover_image_url: "https://i.ibb.co/nsCbcGV/Moby-Dick.jpg",
   },
   {
+    id: 6,
     title: "The Lord of the Rings",
     author: "J.R.R. Tolkien",
     genre: "Fantasy",
@@ -65,6 +71,7 @@ module.exports = [
     cover_image_url: "https://i.ibb.co/txj7bzh/The-Lord-of-the-Rings.jpg",
   },
   {
+    id: 7,
     title: "The Catcher in the Rye",
     author: "J.D. Salinger",
     genre: "Fiction",
@@ -76,6 +83,7 @@ module.exports = [
     cover_image_url: "https://i.ibb.co/x5NJztZ/The-Catcher-in-the-Rye.jpg",
   },
   {
+    id: 8,
     title: "The Hobbit",
     author: "J.R.R. Tolkien",
     genre: "Fantasy",
@@ -87,6 +95,7 @@ module.exports = [
     cover_image_url: "https://i.ibb.co/PM0BQcf/The-Hobbit.jpg",
   },
   {
+    id: 9,
     title: "One Hundred Years of Solitude",
     author: "Gabriel Garcia Marquez",
     genre: "Fantasy",
@@ -99,6 +108,7 @@ module.exports = [
       "https://i.ibb.co/g6Zfy0c/One-Hundred-Years-of-Solitude.jpg",
   },
   {
+    id: 10,
     title: "War and Peace",
     author: "Leo Tolstoy",
     genre: "Historic",

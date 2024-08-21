@@ -3,35 +3,43 @@ const { MongoClient } = require('mongodb')
 
 const client = new MongoClient(config.mongo.uri)
 
+const seedCollection = async (db, data, name) => {
+  const collection = db.collection(name)
+  console.log(`Deleting all documents in the ${name} collection...`);
+  await collection.deleteMany({});
+  console.log(`Inserting documents into the ${name} collection...`);
+  if (data.length === 0) {
+    return []
+  }
+  const result = await collection.insertMany(data);
+  console.log(
+    `Inserted ${result.insertedCount} documents into the ${name} collection`
+  )
+  return await collection.find().toArray()
+}
+
 const seedMongoDB = async ({books, users, genres, messages}) => {
   try {
     console.log(`Connecting to ${config.mongo.uri}...`)
-    await client.connect();
-    const db = client.db(config.mongo.dbName)
+    await client.connect()
+    let db = client.db(config.mongo.dbName)
     
+    // Drop the database
+    const dropResult = await db.dropDatabase()
+    if (dropResult) {
+      console.log(`Database '${config.mongo.dbName}' dropped successfully.`);
+    } else {
+      console.log(`Database '${config.mongo.dbName}' could not be dropped or did not exist.`);
+    }
+    db = client.db(config.mongo.dbName)
+
     // Seed users
-    const usersCollection = db.collection('users')
-    console.log('Deleting all documents in the users collection...')
-    await usersCollection.deleteMany({})
-    console.log('Inserting documents into the users collection...')
-    await usersCollection.insertMany(users)
-    const newUsers = await usersCollection.find().toArray()
-    console.log(`Inserted ${users.length} documents into the users collection`)
-    
+    const newUsers = await seedCollection(db, users, 'users')
+
     // Seed genres
-    const genresCollection = db.collection('genres')
-    console.log('Deleting all documents in the genres collection...')
-    await genresCollection.deleteMany({})
-    console.log('Inserting documents into the genres collection...')
-    await genresCollection.insertMany(genres)
-    const newGenres = await genresCollection.find().toArray()
-    console.log(`Inserted ${genres.length} documents into the genres collection`)
-    
+    const newGenres = await seedCollection(db, genres, 'genres')
+
     // Seed books
-    const collection = db.collection('books')
-    console.log('Deleting all documents in the books collection...')
-    await collection.deleteMany({})
-    console.log('Inserting documents into the books collection...')
     const genresByName = new Map(newGenres.map(genre => [genre.name, genre]))
     const usersByUsername = new Map(newUsers.map(user => [user.username, user]))
     const booksToInsert = books.map(book => {
@@ -39,24 +47,19 @@ const seedMongoDB = async ({books, users, genres, messages}) => {
       const userId = usersByUsername.get(book.user)._id
       return { ...book, genre: genreId, user: userId }
     })
-    const result = await collection.insertMany(booksToInsert)
-    console.log(`Inserted ${result.insertedCount} documents into the books collection`)
+    const newBooks = await seedCollection(db, booksToInsert, 'books')
  
     // Seed messages
-    const messagesCollection = db.collection('messages')
-    console.log('Deleting all documents in the messages collection...')
-    await messagesCollection.deleteMany({})
-    console.log('Inserting documents into the messages collection...')
-    await messagesCollection.insertMany(messages)
-    console.log(`Inserted ${messages.length} documents into the messages collection`)
-    
-    
-    console.log('Database seeding complete.')
-  } catch (err) {
-    console.error('Error during database seeding:', err)
-  } finally {
-    await client.close()
-  }
-}
+    const newMessages = await seedCollection(db, messages, 'messages')
 
-module.exports = { seedMongoDB }
+    console.log('Database seeding complete.')
+
+    return {users: newUsers, genres: newGenres, books: newBooks, messages: newMessages}
+  } catch (err) {
+    console.error("Error during database seeding:", err);
+  } finally {
+    await client.close();
+  }
+};
+
+module.exports = { seedMongoDB };

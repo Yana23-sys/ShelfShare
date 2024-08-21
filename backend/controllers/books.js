@@ -1,6 +1,7 @@
-const { findAllBooks, insertBook } = require('../models/books')
+const { findAllBooks, insertBook, findBookById } = require('../models/books')
 const { findUserByName } = require('../models/users')
 const { findGenreByName } = require('../models/genres')
+const mongoose = require("mongoose")
 
 // if user has not provided any img -> default img cover url
 const DEFAULT_COVER_IMAGE_URL = 'https://media.istockphoto.com/id/483822100/vector/closed-old-book-with-a-red-bookmark.jpg?s=612x612&w=0&k=20&c=OqF55jpQv2EOO1_Ivwbx2rgFFtw1RLCE5DWF93IR8Ic='
@@ -11,13 +12,34 @@ exports.getAllBooks = (req, res, next) => {
     .then(books => {
         res.status(200).send({ books });
     })
-    .catch(error => {
-        console.error('Error fetching books:', error);
-        next(error)
+    .catch((error) => {
+      console.error("Error fetching books:", error);
+      next(error);
     });
 };
 
-exports.postBook = async (req, res, next) => {
+exports.getBookById = (req, res, next) => {
+  const { bookId } = req.params;
+
+  // validate if bookId is a valid MongoDB ObjectId or not
+  if (!mongoose.Types.ObjectId.isValid(bookId)) {
+    return res.status(400).send({ message: "Invalid book ID format" });
+  }
+
+  findBookById(bookId)
+    .then((book) => {
+      if (!book) {
+        return res.status(404).send({ message: "Book not found" });
+      }
+      res.status(200).send({ book });
+    })
+    .catch((error) => {
+      console.error("Error fetching book by Id:", error);
+      next(error);
+    });
+};
+
+exports.createBook = async (req, res, next) => {
     const { title, author, genre: genreName, description, publication_year, posted_date, username, cover_image_url } = req.body
 
     if (!title || !author || !genreName || !username) {
