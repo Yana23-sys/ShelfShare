@@ -1,0 +1,69 @@
+/* Form */
+.loginFormContainer {
+    display: grid;
+    justify-content: center;
+    justify-content: space-evenly;
+    font-size: large;
+    padding: 2%;
+    border-bottom-style: groove;
+    margin-bottom: 5%;
+    background-color: #0e2a35c6;
+    color: #ffffff;
+    border-radius: 12px;
+}
+
+.loginFormContainer:hover {
+    background-color: #0e2a35;
+}
+
+.loginEmailLabel {
+    display: block;
+    margin-bottom: 5%;
+}
+
+.loginPasswordLabel {
+    display: block;
+    margin-bottom: 5%;
+}
+
+.loginButton {
+    background-color: #351e0ebe;
+    color: #ffffff;
+    border: solid;
+    border-color: #dd7627;
+    padding: 3%;
+    font-size: large;
+    border-radius: 12px
+}
+
+.loginButton:hover {
+    background-color: #0e2a35;
+    color: #EBE3CA;
+    cursor: pointer;
+}
+
+
+
+/* User login buttons */
+.userButtonsContainer {
+    display: flex;
+    justify-content: center;
+    gap: 5%;
+    padding-bottom: 5%;
+}
+
+.userLoginButton {
+    background-color: #351e0ebe;
+    color: #ffffff;
+    border: solid;
+    border-color: #dd7627;
+    padding: 1%;
+    font-size: medium;
+    border-radius: 12px
+}
+
+.userLoginButton:hover {
+    background-color: #0e2a35;
+    color: #EBE3CA;
+    cursor: pointer;
+}
