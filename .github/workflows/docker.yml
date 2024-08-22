@@ -22,6 +22,6 @@ jobs:
 
       - name: Build and push Backend Docker image
         run: |-
-          BACKEND_IMAGE="${DOCKER_REPO_URI}/${DOCKER_USERNAME}/shelfshark-backend"
+          BACKEND_IMAGE="${DOCKER_REPO_URI}/${DOCKER_USERNAME}/shelfshare-backend"
           docker build -t ${BACKEND_IMAGE}:latest -t ${BACKEND_IMAGE}:${GITHUB_SHA::8} backend/
           docker push -a ${BACKEND_IMAGE}
