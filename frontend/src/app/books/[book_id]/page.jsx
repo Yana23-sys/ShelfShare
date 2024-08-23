@@ -2,7 +2,7 @@
 
 import BookPage from "../../Components/Bookpage";
 import { useState, useEffect } from "react";
-import { getBookById } from "../../../../api";
+import { getBookById } from "../../api/books";
 import { useParams } from "next/navigation";
 
 const IndividualBookPage = () => {
@@ -11,18 +11,8 @@ const IndividualBookPage = () => {
   const [book, setBook] = useState({});
 
   useEffect(() => {
-
-    const id = Number(book_id);
-    if (id) {
-      const fetchedBook = getBookById(id);
-
-      if (fetchedBook) {
-        setBook(fetchedBook);
-
-      } else {
-        console.error("Book not found");
-      }
-    }
+    getBookById(book_id)
+      .then((book) => setBook(book))
   }, [book_id]);
 
   return (
