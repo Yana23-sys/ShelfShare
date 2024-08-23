@@ -1,7 +1,5 @@
-import { getAllBooks } from '../../api';
-import styles from '../Styles/Booklist.module.css';
-
-import BookCard from './BookCard';
+import {getAllBooks} from '../../../api';
+import BookCard from './Bookcard';
 
 const BookList = () => {
     const books = getAllBooks();
@@ -11,7 +9,7 @@ const BookList = () => {
         {
             books.map((book) => {
                 return (
-                    <BookCard className={styles.booklist} book= { book } key= { book.id }/>
+                    <BookCard book= {book} key= {book.id}/>
                 );
             })
         }

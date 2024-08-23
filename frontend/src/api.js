@@ -1,11 +1,12 @@
-import bookData from "./bookData";
+import books from '../backend/db/seed/data/test/books';
 
 const getAllBooks = () => {
-    return bookData;
+    return books
 };
 
-const getBookById = () => {
-    return bookData[0]; // [0] book_id placeholder
+const getBookById = (id) => {
+    let fetchedBook = books.find((book) => book.id === id)
+    return fetchedBook
 };
 
 export { getAllBooks, getBookById };

@@ -1,3 +1,43 @@
 .bookpage {
-    background-color: rgb(136, 196, 136);
-  };
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  padding: 20px;
+  max-width: 400px;
+  margin: 0 auto;
+  background-color: #fff;
+  border-radius: 8px;
+}
+
+  .bookpage img {
+  width: 100%;
+  max-width: 400px;
+  height: auto;
+  border-radius: 8px;
+  margin-bottom: 20px;
+}
+
+  .bookpage h1 {
+  font-size: 24px;
+  margin: 0 0 10px 0;
+  text-align: center;
+  color: #333;
+}
+
+  .bookpage h3 {
+  font-size: 18px;
+  margin: 10px 0;
+  text-align: center;
+  color: #666;
+}
+
+  .bookpage p {
+  font-size: 16px;
+  line-height: 1.6;
+  text-align: justify;
+  margin: 15px 0;
+  color: #555;
+  max-width: 600px;
+}
+
