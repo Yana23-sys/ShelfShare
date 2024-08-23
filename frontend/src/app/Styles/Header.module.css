@@ -11,3 +11,10 @@
   margin: 0;
   font-size: 3rem;
 }
+
+.avatarImg {
+  position: absolute;
+  left: 90%;
+  width: 10%;
+  height: 10%;
+}
