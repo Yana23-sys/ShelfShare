@@ -1,15 +1,26 @@
-import {getAllBooks} from '../../../api';
+"use client";
+
+import {getAllBooks} from '../api/books';
 import BookCard from './Bookcard';
+import { useState, useEffect } from 'react'
 
 const BookList = () => {
-    const books = getAllBooks();
+    const [books, setBooks] = useState([])
+
+    useEffect(() => {
+        getAllBooks()
+            .then(fetchedBooks => {
+                console.log(fetchedBooks)
+                setBooks(fetchedBooks)
+            })
+    }, [])
 
     return (
         <section>
         {
             books.map((book) => {
                 return (
-                    <BookCard book= {book} key= {book.id}/>
+                    <BookCard book={book} key={book._id}/>
                 );
             })
         }
