@@ -5,7 +5,8 @@ const getAllBooks = () => {
 };
 
 const getBookById = (id) => {
-    return books.find(book => book.id === id)
+    let fetchedBook = books.find((book) => book.id === id)
+    return fetchedBook
 };
 
 export { getAllBooks, getBookById };

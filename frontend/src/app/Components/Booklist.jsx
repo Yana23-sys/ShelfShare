@@ -17,5 +17,3 @@ const BookList = () => {
     );
 };
 export default BookList;
-
-//"use server / client" / 'use server / client'
