@@ -60,6 +60,30 @@ const findAllBooks = async (sortCriteria = {}, filterCriteria = {}) => {
     throw err;
   }
 };
+// Here’s a breakdown of why each stage is used in the aggregation pipeline for sorting:
+
+// $lookup (First Stage):
+
+// Joins the Book collection with the users collection to include user details.
+// Adds user details as a new field in the Book documents.
+// $unwind (First Stage):
+
+//unwind
+// Converts the array of user details into individual documents. Each book now has a single user object instead of an array.
+// $lookup (Second Stage):
+
+// Joins the Book collection with the genres collection to include genre details.
+// Adds genre details as a new field in the Book documents.
+// $unwind (Second Stage):
+//unwind
+// Converts the array of genre details into individual documents. Each book now has a single genre object instead of an array.
+// $match:
+
+//match
+// Applies any additional filters specified in the filterCriteria.
+
+//sort
+// Sorts the documents based on the fields in the sort object, which can now include the populated fields.
 
 const insertBook = (newBook) => {
   if (newBook.posted_date) {
