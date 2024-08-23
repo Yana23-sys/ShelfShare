@@ -17,6 +17,7 @@
     "husky": "^9.1.4"
   },
   "dependencies": {
+    "http-proxy-middleware": "^3.0.0",
     "moment": "^2.30.1"
   }
 }

@@ -239,13 +239,7 @@ describe("GET /api/books, for sort_by query", () => {
       .expect(200)
       .then(({ body }) => {
         expect(body.books.length).toBeGreaterThan(0); // Adjust this based on the number of books you have
-        // Sort books by genre name manually
-        const sortedByGenre = [...body.books].sort((a, b) => {
-          const genreA = a.genre.name || "";
-          const genreB = b.genre.name || "";
-          return genreA.localeCompare(genreB);
-        });
-        expect(body.books).toEqual(sortedByGenre);
+        expect(body.books).toBeSortedBy("genre", { ascending: true });
       });
   });
 
@@ -264,17 +258,17 @@ describe("GET /api/books, for sort_by query", () => {
       .get("/api/books?sort_by=location")
       .expect(200)
       .then(({ body }) => {
-        expect(body.books.length).toBeGreaterThan(0);
+        expect(body.books.length).toBeGreaterThan(0); // Adjust this based on the number of books you have
 
-        // Manually sort books by user location
-        const sortedByLocation = [...body.books].sort((a, b) => {
-          const locationA = a.user.location || "";
-          const locationB = b.user.location || "";
-          return locationA.localeCompare(locationB);
-        });
+        //toBeSortedBy method expects a direct key in each object of the array, not a nested one like "user.location". Since the location is a nested property inside the user object, we need to transform the array or use a different approach to validate the sorting.
 
-        // Check if books are sorted correctly
-        expect(body.books).toEqual(sortedByLocation);
+        const booksWithLocation = body.books.map((book) => ({
+          ...book,
+          location: book.user.location,
+        }));
+
+        // Use toBeSortedBy on the flattened array
+        expect(booksWithLocation).toBeSortedBy("location", { ascending: true });
       });
   });
 
