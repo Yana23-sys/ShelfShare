@@ -5,10 +5,7 @@
     "backend",
     "frontend"
   ],
-  "scripts": {
-    "install": "npm install --workspaces",
-    "prepare": "husky install"
-  },
+  "scripts": {},
   "keywords": [],
   "author": "",
   "license": "ISC",
