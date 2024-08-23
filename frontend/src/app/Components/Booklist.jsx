@@ -1,4 +1,4 @@
-import {getAllBooks} from '../../../api';
+import {getAllBooks} from '../../api';
 import BookCard from './Bookcard';
 
 const BookList = () => {

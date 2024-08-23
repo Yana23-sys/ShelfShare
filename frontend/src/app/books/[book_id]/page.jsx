@@ -1,8 +1,8 @@
 "use client";
 
 import BookPage from "../../Components/Bookpage";
+import { getBookById } from '../../../api';
 import { useState, useEffect } from "react";
-import { getBookById } from "../../../../api";
 import { useParams } from "next/navigation";
 
 const IndividualBookPage = () => {
@@ -13,6 +13,8 @@ const IndividualBookPage = () => {
   useEffect(() => {
 
     const id = Number(book_id);
+    console.log(id, typeof id)
+    
     if (id) {
       const fetchedBook = getBookById(id);
 
