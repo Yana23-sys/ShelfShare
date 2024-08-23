@@ -17,7 +17,7 @@ export const getAllBooks = (params) => {
 export const getBookById = (id) => {
   return api.get(`/books/${id}`)
       .then(response => {
-        return response.data.books})
+        return response.data.book})
       .catch(error => {
         console.error('Error getting book by id from api:', error)
         throw error

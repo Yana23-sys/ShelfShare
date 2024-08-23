@@ -4,7 +4,7 @@ import styles from '../Styles/Bookcard.module.css';
 const BookCard = ({book}) => {
     return (
         <section className={styles.bookcard}>
-            <Link href={`/books/${book.id}`}>
+            <Link href={`/books/${book._id}`}>
             
                 <img src={book.cover_image_url} alt='book-image' id='book-image'/>
                 <h1 id='book-title'>{book.title}</h1>
