@@ -8,7 +8,7 @@ import { useParams } from "next/navigation";
 const IndividualBookPage = () => {
 
   const { book_id } = useParams();
-  const [book, setBook] = useState({});
+  const [book, setBook] = useState({genre: {}});
 
   useEffect(() => {
     getBookById(book_id)
