@@ -16,39 +16,23 @@ const bookSchema = new mongoose.Schema({
 const Book = mongoose.model("Book", bookSchema);
 
 // Mongoose .populate() method to automatically replace the references with the actual documents from the genres and users collections
-const findAllBooks = async (sortCriteria = {}) => {
+const findAllBooks = async (sortCriteria = {}, filterCriteria = {}) => {
   try {
-    // Fetch books with populated fields
-    const books = await Book.find()
-      .populate("genre", "name")
-      .populate("user", "username location"); // Ensure 'location' is included
-
-    // Sort books based on the sort criteria
-    if (sortCriteria["genre.name"]) {
-      // Sort by genre name
-      books.sort((a, b) => {
-        const genreA = a.genre.name || "";
-        const genreB = b.genre.name || "";
-        return genreA.localeCompare(genreB);
-      });
-    } else if (sortCriteria["author"]) {
-      // Sort by author name
-      books.sort((a, b) => a.author.localeCompare(b.author));
-    } else if (sortCriteria["user.location"]) {
-      // Sort by user location
-      books.sort((a, b) => {
-        const locationA = a.user.location || "";
-        const locationB = b.user.location || "";
-        return locationA.localeCompare(locationB);
-      });
+    let sort = {};
+    if (sortCriteria.sortBy === "genre") {
+      sort = { "genre.name": 1 }; // Sort by genre name (ascending)
+    } else if (sortCriteria.sortBy === "author") {
+      sort = { author: 1 }; // Sort by author name (ascending)
+    } else if (sortCriteria.sortBy === "location") {
+      sort = { "user.location": 1 }; // Sort by user location (ascending)
     } else {
-      // Default sort (e.g., by title)
-      books.sort((a, b) => {
-        const titleA = a.title || "";
-        const titleB = b.title || "";
-        return titleA.localeCompare(titleB);
-      });
+      sort = { title: 1 }; // Default sort by title (ascending)
     }
+
+    const books = await Book.find(filterCriteria)
+      .populate("genre", "name")
+      .populate("user", "username location")
+      .sort(sort); // Apply sorting directly in MongoDB query
 
     return books;
   } catch (err) {

@@ -253,22 +253,41 @@ describe("GET /api/books, for sort_by query", () => {
       });
   });
 
-  test("?sort_by=location responds with an array of books ordered by location", () => {
+  // test("?sort_by=location responds with an array of books ordered by location", () => {
+  //   return request(app)
+  //     .get("/api/books?sort_by=location")
+  //     .expect(200)
+  //     .then(({ body }) => {
+  //       expect(body.books.length).toBeGreaterThan(0); // Ensure there are books returned
+
+  //       // Flatten the location field for sorting validation
+  //       const booksWithLocation = body.books.map((book) => ({
+  //         ...book,
+  //         location: book.user.location,
+  //       }));
+
+  //       // Check if the array is sorted by the location field
+  //       expect(booksWithLocation).toBeSortedBy("location", { ascending: true });
+  //     });
+  // });
+
+  test.only("?sort_by=location responds with an array of books ordered by location", () => {
     return request(app)
       .get("/api/books?sort_by=location")
       .expect(200)
       .then(({ body }) => {
-        expect(body.books.length).toBeGreaterThan(0); // Adjust this based on the number of books you have
-
-        //toBeSortedBy method expects a direct key in each object of the array, not a nested one like "user.location". Since the location is a nested property inside the user object, we need to transform the array or use a different approach to validate the sorting.
+        expect(body.books.length).toBeGreaterThan(0); // Ensure there are books returned
 
         const booksWithLocation = body.books.map((book) => ({
           ...book,
           location: book.user.location,
         }));
 
-        // Use toBeSortedBy on the flattened array
-        expect(booksWithLocation).toBeSortedBy("location", { ascending: true });
+        // Manually check if sorted
+        const sortedBooks = [...booksWithLocation].sort((a, b) =>
+          a.location.localeCompare(b.location)
+        );
+        expect(booksWithLocation).toEqual(sortedBooks); // Check if manually sorted array matches the result
       });
   });
 

@@ -13,25 +13,18 @@ exports.getAllBooks = async (req, res, next) => {
     // Extract sorting criteria from query parameters
     const sort_by = req.query.sort_by;
     let sortCriteria = {};
+    let filterCriteria = {}; // Implement filtering if needed
 
     // Validate and set sort criteria
-    switch (sort_by) {
-      case "genre":
-        sortCriteria = { "genre.name": 1 }; // Ascending order by genre name
-        break;
-      case "author":
-        sortCriteria = { author: 1 }; // Ascending order by author
-        break;
-      case "location":
-        sortCriteria = { "user.location": 1 }; // Ascending order by user location
-        break;
-      default:
-        if (sort_by) {
-          return res.status(400).send({ message: "Invalid sort_by field" });
-        }
+    if (sort_by === "genre" || sort_by === "author" || sort_by === "location") {
+      sortCriteria = { sortBy: sort_by };
+    } else if (sort_by) {
+      // Respond with error if sort_by is invalid
+      return res.status(400).send({ message: "Invalid sort_by field" });
     }
 
-    const books = await findAllBooks(sortCriteria);
+    // Fetch books using the model function
+    const books = await findAllBooks(sortCriteria, filterCriteria);
     res.status(200).send({ books });
   } catch (error) {
     console.error("Error fetching books:", error);
