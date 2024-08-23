@@ -18,21 +18,41 @@ const Book = mongoose.model("Book", bookSchema);
 // Mongoose .populate() method to automatically replace the references with the actual documents from the genres and users collections
 const findAllBooks = async (sortCriteria = {}, filterCriteria = {}) => {
   try {
+    const { sortBy } = sortCriteria;
+
     let sort = {};
-    if (sortCriteria.sortBy === "genre") {
+    if (sortBy === "genre") {
       sort = { "genre.name": 1 }; // Sort by genre name (ascending)
-    } else if (sortCriteria.sortBy === "author") {
+    } else if (sortBy === "author") {
       sort = { author: 1 }; // Sort by author name (ascending)
-    } else if (sortCriteria.sortBy === "location") {
+    } else if (sortBy === "location") {
       sort = { "user.location": 1 }; // Sort by user location (ascending)
     } else {
       sort = { title: 1 }; // Default sort by title (ascending)
     }
 
-    const books = await Book.find(filterCriteria)
-      .populate("genre", "name")
-      .populate("user", "username location")
-      .sort(sort); // Apply sorting directly in MongoDB query
+    const books = await Book.aggregate([
+      {
+        $lookup: {
+          from: "users",
+          localField: "user",
+          foreignField: "_id",
+          as: "user",
+        },
+      },
+      { $unwind: "$user" },
+      {
+        $lookup: {
+          from: "genres",
+          localField: "genre",
+          foreignField: "_id",
+          as: "genre",
+        },
+      },
+      { $unwind: "$genre" },
+      { $match: filterCriteria },
+      { $sort: sort },
+    ]);
 
     return books;
   } catch (err) {

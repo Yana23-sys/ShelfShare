@@ -239,7 +239,18 @@ describe("GET /api/books, for sort_by query", () => {
       .expect(200)
       .then(({ body }) => {
         expect(body.books.length).toBeGreaterThan(0); // Adjust this based on the number of books you have
-        expect(body.books).toBeSortedBy("genre", { ascending: true });
+
+        // Flatten the genre field for sorting validation
+        const booksWithGenre = body.books.map((book) => ({
+          ...book,
+          genre: book.genre.name,
+        }));
+
+        // Manually check if sorted
+        const sortedBooks = [...booksWithGenre].sort((a, b) =>
+          a.genre.localeCompare(b.genre)
+        );
+        expect(booksWithGenre).toEqual(sortedBooks); // Check if manually sorted array matches the result
       });
   });
 
@@ -271,7 +282,7 @@ describe("GET /api/books, for sort_by query", () => {
   //     });
   // });
 
-  test.only("?sort_by=location responds with an array of books ordered by location", () => {
+  test("?sort_by=location responds with an array of books ordered by location", () => {
     return request(app)
       .get("/api/books?sort_by=location")
       .expect(200)
