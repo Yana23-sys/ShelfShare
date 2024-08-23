@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
-const { formatDate } = require("../db/seed/data/utils_data");
+
 
 const bookSchema = new mongoose.Schema({
   title: { type: String, required: true },
@@ -15,7 +15,6 @@ const bookSchema = new mongoose.Schema({
 
 const Book = mongoose.model("Book", bookSchema);
 
-// Mongoose .populate() method to automatically replace the references with the actual documents from the genres and users collections
 const findAllBooks = async (sortCriteria = {}, filterCriteria = {}) => {
   try {
     const { sortBy } = sortCriteria;
@@ -31,7 +30,7 @@ const findAllBooks = async (sortCriteria = {}, filterCriteria = {}) => {
       sort = { title: 1 }; // Default sort by title (ascending)
     }
 
-    const books = await Book.aggregate([
+    return await Book.aggregate([
       {
         $lookup: {
           from: "users",
@@ -52,48 +51,16 @@ const findAllBooks = async (sortCriteria = {}, filterCriteria = {}) => {
       { $unwind: "$genre" },
       { $match: filterCriteria },
       { $sort: sort },
-    ]);
-
-    return books;
+    ])
   } catch (err) {
     console.error("Error fetching books:", err);
     throw err;
   }
-};
-// Here’s a breakdown of why each stage is used in the aggregation pipeline for sorting:
-
-// $lookup (First Stage):
-
-// Joins the Book collection with the users collection to include user details.
-// Adds user details as a new field in the Book documents.
-// $unwind (First Stage):
-
-//unwind
-// Converts the array of user details into individual documents. Each book now has a single user object instead of an array.
-// $lookup (Second Stage):
-
-// Joins the Book collection with the genres collection to include genre details.
-// Adds genre details as a new field in the Book documents.
-// $unwind (Second Stage):
-//unwind
-// Converts the array of genre details into individual documents. Each book now has a single genre object instead of an array.
-// $match:
-
-//match
-// Applies any additional filters specified in the filterCriteria.
-
-//sort
-// Sorts the documents based on the fields in the sort object, which can now include the populated fields.
+}
 
 const insertBook = (newBook) => {
-  if (newBook.posted_date) {
-    newBook.posted_date = formatDate(newBook.posted_date, "DD-MM-YYYY"); // Convert to Date format
-  }
-
-  const book = new Book(newBook);
-  return book
+  return new Book(newBook)
     .save()
-    .then((savedBook) => savedBook)
     .catch((err) => {
       console.error("Error inserting book:", err);
       throw err;
@@ -103,7 +70,7 @@ const insertBook = (newBook) => {
 const findBookById = (id) => {
   return Book.findById(id)
     .populate("genre", "name")
-    .populate("user", "username")
+    .populate("user")
     .catch((err) => {
       console.error("Error fetching book by Id:", err);
       throw err;

@@ -44,12 +44,7 @@ exports.getBookById = (req, res, next) => {
       if (!book) {
         return res.status(404).send({ message: "Book not found" });
       }
-      // Ensure posted_date is a Date object
-      if (book.posted_date instanceof Date) {
-        book.posted_date = book.posted_date.toISOString().split("T")[0];
-      }
-      console.log(book.posted_date); // Verify the date format
-      console.log(book); // Check the full book object
+
       res.status(200).send({ book });
     })
     .catch((error) => {
@@ -85,19 +80,13 @@ exports.createBook = async (req, res, next) => {
     return res.status(404).send({ message: `Genre '${genreName}' not found` });
   }
 
-  const coverImgUrl = cover_image_url || DEFAULT_COVER_IMAGE_URL;
-
-  // Convert posted_date to Date object
-  const [day, month, year] = posted_date.split("/");
-  const formattedDate = new Date(`${year}-${month}-${day}`); // Convert to ISO format
-
   const newBook = {
     title,
     author,
     description,
     publication_year,
-    posted_date: formattedDate, // Store as ISO date
-    cover_image_url: coverImgUrl,
+    posted_date: new Date(posted_date), 
+    cover_image_url: cover_image_url || DEFAULT_COVER_IMAGE_URL,
     user: user._id,
     genre: genre._id,
   };
@@ -105,8 +94,6 @@ exports.createBook = async (req, res, next) => {
   try {
     const insertedBook = await insertBook(newBook);
     const book = { ...insertedBook.toObject(), username, genre: genreName };
-    // Reformat date before sending in response if needed
-    book.posted_date = book.posted_date.toISOString().split("T")[0]; // Convert to DD/MM/YYYY for response
     res.status(201).send({ book });
   } catch (error) {
     console.error("Error inserting book:", error);

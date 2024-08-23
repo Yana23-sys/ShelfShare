@@ -1,10 +1,7 @@
 const data = require("../db/seed/data");
 const { seedMongoDB } = require("../db/seed/seed");
 const config = require("../config");
-const {
-  connectToMongo,
-  disconnectFromMongo,
-} = require("../db/mongodb-connection");
+const {connectToMongo, disconnectFromMongo} = require("../db/mongodb-connection");
 const request = require("supertest");
 const app = require("../app");
 const endpoints = require("../controllers/endpoints");
@@ -78,7 +75,7 @@ describe("/api/books", () => {
         description:
           "The prequel to The Lord of the Rings, following Bilbo Baggins' journey.",
         publication_year: "1937",
-        posted_date: "2021-01-01", // Expected date in day/month/year format
+        posted_date: "2021-01-01T00:00:00.000Z",
         username: "yana53674808",
         cover_image_url: "https://i.ibb.co/PM0BQcf/The-Hobbit.jpg",
       };
@@ -100,7 +97,7 @@ describe("/api/books", () => {
         description:
           "The prequel to The Lord of the Rings, following Bilbo Baggins' journey.",
         publication_year: "1937",
-        posted_date: "01/01/2021",
+        posted_date: "2021-01-01T00:00:00.000Z",
         username: "yana53674808",
       };
 
@@ -122,7 +119,7 @@ describe("/api/books", () => {
         description:
           "The prequel to The Lord of the Rings, following Bilbo Baggins' journey.",
         publication_year: "1937",
-        posted_date: "01/01/2021",
+        posted_date: "2021-01-01T00:00:00.000Z",
         username: "yana53674808",
       };
 
@@ -143,7 +140,7 @@ describe("/api/books", () => {
         description:
           "The prequel to The Lord of the Rings, following Bilbo Baggins' journey.",
         publication_year: "1937",
-        posted_date: "01/01/2021",
+        posted_date: "2021-01-01T00:00:00.000Z",
         username: "not-existent-user",
         cover_image_url: "https://i.ibb.co/PM0BQcf/The-Hobbit.jpg",
       };
@@ -165,7 +162,7 @@ describe("/api/books", () => {
         description:
           "The prequel to The Lord of the Rings, following Bilbo Baggins' journey.",
         publication_year: "1937",
-        posted_date: "01/01/2021",
+        posted_date: "2021-01-01T00:00:00.000Z",
         username: "yana53674808",
         cover_image_url: "https://i.ibb.co/PM0BQcf/The-Hobbit.jpg",
       };
