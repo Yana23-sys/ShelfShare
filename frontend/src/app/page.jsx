@@ -1,9 +1,6 @@
 import styles from "./Styles/page.module.css";
 import { Card, CardHeader, CardMedia } from "@mui/material";
 
-import Booklist from "./booklist";
-import Bookpage from "./bookpage";
-
 const Home = () => {
   return (
     <div>
@@ -71,9 +68,6 @@ const Home = () => {
             />
             <h2 className={styles.tag}>Author: {"Dan Brown"}</h2>
           </Card>
-
-          <Booklist/>
-          <Bookpage/>
 
         </section>
       </section>
