@@ -1,30 +1,16 @@
-"use client";
-
-import {getAllBooks} from '../api/books';
 import BookCard from './Bookcard';
-import { useState, useEffect } from 'react'
-
-const BookList = () => {
-    const [books, setBooks] = useState([])
-
-    useEffect(() => {
-        getAllBooks()
-            .then(fetchedBooks => {
-                console.log(fetchedBooks)
-                setBooks(fetchedBooks)
-            })
-    }, [])
-
-    return (
-        <section>
-        {
-            books.map((book) => {
-                return (
-                    <BookCard book={book} key={book._id}/>
-                );
-            })
-        }
-        </section>
-    );
+import { Grid } from '@mui/material';  
+  
+const Booklist = ({ books }) => {  
+  return (  
+    <Grid container spacing={4}>  
+      {books.map((book, index) => (  
+        <Grid item key={index} xs={12} sm={6} md={4} lg={3}>  
+          <BookCard book={book} />  
+        </Grid>  
+      ))}  
+    </Grid>  
+  );  
 };
-export default BookList;
+
+export default Booklist;
