@@ -1,0 +1,49 @@
+.profilePage {
+  padding: 20px;
+}
+
+.profileCard {
+  padding: 20px;
+  text-align: center;
+}
+
+.profileImage {
+  width: 100px;
+  height: 100px;
+  margin: auto;
+  margin-bottom: 20px;
+}
+
+.profileTitle {
+  margin-bottom: 10px;
+}
+
+.location {
+  margin-bottom: 20px;
+  color: gray;
+}
+
+.profileDetails {
+  text-align: left;
+}
+
+.profileName,
+.profileContact,
+.profileEmail {
+  margin-bottom: 10px;
+}
+
+.saveButton {
+  width: 100%;
+  background-color: orange;
+  color: white;
+}
+
+.profileSectionCard {
+  padding: 20px;
+  margin-bottom: 20px; /* Add some space between the cards */
+}
+
+.sectionTitle {
+  margin-bottom: 20px;
+}
