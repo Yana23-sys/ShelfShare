@@ -4,8 +4,7 @@ import styles from '../Styles/Bookcard.module.css';
   
 const BookCard = ({ book }) => {  
   return (  
-    <Link href={`/books/${book._id}`} passHref>  
-      <Card className={styles.bookCard} component="a">  
+      <Card className={styles.bookCard} component={Link} href={`/books/${book._id}`} passHref>  
         <div className={styles.bookCardImageContainer}>  
           <CardMedia  
             component="img"  
@@ -33,7 +32,6 @@ const BookCard = ({ book }) => {
           </Button>  
         </CardContent>  
       </Card>  
-    </Link>  
   );  
 };  
   
