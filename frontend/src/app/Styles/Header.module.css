@@ -14,15 +14,14 @@
 
 .avatarImg {
   position: absolute;
-  left: 90%;
-  width: 10%;
   height: 10%;
+  top: 15px;
 }
 
 .navbar {
   display: flex;
   gap: 1.5rem;
-  margin-right: 10%;
+  margin-right: 7%;
 }
 
 .navbar a {
