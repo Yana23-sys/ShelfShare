@@ -13,6 +13,7 @@ export const UserProvider = (props) => {
       }
    }, [user._id]);
    // TODO: fetch users swap requests
+   // getAllSwapsByUserId(user._id) -> GET /swaps?user_id=userId
 
    return (
       <UserContext.Provider value={{ user, setUser }}>
