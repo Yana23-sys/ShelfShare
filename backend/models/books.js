@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+const ObjectId = mongoose.Types.ObjectId
 const Schema = mongoose.Schema;
 
 
@@ -30,6 +31,11 @@ const findAllBooks = async (sortCriteria = {}, filterCriteria = {}) => {
       sort = { title: 1 }; // Default sort by title (ascending)
     }
 
+    let filter = {}
+    if (filterCriteria.user_id) {
+      filter['user._id'] = new ObjectId(filterCriteria.user_id)
+    }
+
     return await Book.aggregate([
       {
         $lookup: {
@@ -49,7 +55,7 @@ const findAllBooks = async (sortCriteria = {}, filterCriteria = {}) => {
         },
       },
       { $unwind: "$genre" },
-      { $match: filterCriteria },
+      { $match: filter },
       { $sort: sort },
     ])
   } catch (err) {

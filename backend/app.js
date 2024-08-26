@@ -1,5 +1,6 @@
 const express = require('express')
 const { getAllBooks, createBook, getBookById } = require('./controllers/books')
+const { getAllUsers } = require('./controllers/users')
 const { getEndpoints } = require('./controllers')
 const { serverErrorHandler } = require('./error-handlers')
 const cors = require('cors')
@@ -9,6 +10,8 @@ app.use(express.json());
 app.use(cors())
 
 app.get("/api", getEndpoints);
+
+app.get('/api/users', getAllUsers)
 
 app.get('/api/books', getAllBooks)
 app.post('/api/books', createBook)
