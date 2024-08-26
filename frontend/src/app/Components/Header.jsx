@@ -29,15 +29,17 @@ const Header = () => {
             {user.username && <Link onClick={handleLogout} href="/" prefetch={false}>
                Logout
             </Link>}
+            {user.username && (
+               <Link href={`/my-profile`}>
+                  <img
+                     className={styles.avatarImg}
+                     src={user.avatar}
+                     alt="user avatar"
+                  />
+               </Link>
+            )}
          </nav>
 
-         {user.username && (
-            <img
-               className={styles.avatarImg}
-               src={user.avatar}
-               alt="user avatar"
-            />
-         )}
       </header>
    );
 };
