@@ -20,13 +20,13 @@ const Swap = mongoose.model("Swap", swapSchema);
 
 
 // Middleware to update date_updated on findOneAndUpdate
-Swap.pre('findOneAndUpdate', function(next) {
+swapSchema.pre('findOneAndUpdate', function(next) {
   this.set({ date_updated: Date.now() });
   next();
 });
 
 // Middleware to update date_updated on updateOne
-Swap.pre('updateOne', function(next) {
+swapSchema.pre('updateOne', function(next) {
   this.set({ date_updated: Date.now() });
   next();
 });
