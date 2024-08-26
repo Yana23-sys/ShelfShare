@@ -20,7 +20,7 @@ exports.getAllSwapsByUserId = async (req, res, next) => {
 
   try {
     const swaps = await findAllSwapsByUserId(user_id);
-    res.status(201).send({ swaps });
+    res.status(200).send({ swaps });
   } catch (error) {
     console.error("Error getting swaps by userId", error);
     next(error);
