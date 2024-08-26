@@ -315,3 +315,25 @@ describe("GET /api/users", () => {
       });
   });
 })
+
+describe("/api/swaps", () => {
+  describe("POST /api/swaps" , () => {
+    test("201: creates a new swap", () => {
+      const newSwap = {
+        sender: testData.users[0]._id.toString(),
+        receiver: testData.users[1]._id.toString(),
+        sender_book: testData.books[0]._id.toString(),
+        receiver_book: testData.books[1]._id.toString()
+      };
+
+      return request(app)
+        .post("/api/swaps")
+        .send(newSwap)
+        .expect(201)
+        .then(({ body }) => {
+          expect(body.swap).toMatchObject(newSwap);
+          expect(body.swap.status).toBe("pending");
+        });
+    });
+  })
+})
