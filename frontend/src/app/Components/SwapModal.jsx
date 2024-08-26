@@ -12,10 +12,10 @@ const SwapBookModal = ({ open, onClose, book, user, onConfirm }) => {
 
   const handleConfirm = () => {
     const swap = {
-        sender: user._id,
-        receiver: selectedBook.user._id,
-        senderBook: book._id,
-        receiverBook: selectedBook._id
+        sender: selectedBook.user._id,
+        receiver: book.user._id,
+        senderBook: selectedBook._id,
+        receiverBook: book._id
     }
     setSelectedBook(null);
     onConfirm(swap);
