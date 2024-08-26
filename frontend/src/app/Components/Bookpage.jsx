@@ -1,29 +1,37 @@
 import styles from '../Styles/Bookpage.module.css';
-import { Container, Grid, Typography, Button, Paper, Box } from '@mui/material';
+import { Container, Grid, Typography, Button, Box, Avatar } from '@mui/material';
+import SwapModal from './SwapModal';
+import { UserContext } from "../Contexts/UserContext";
+import { useContext, useState } from 'react';
+
 
 const BookPage = ({book}) => {
+  const { user, setUser } = useContext(UserContext);
+  const [swapModalOpen, setSwapModalOpen] = useState(false);
+
+  const handleSwap = () => {
+    setSwapModalOpen(true);
+  };
 
 return (  
     <Container className={styles.bookPage}>  
         <Grid container spacing={4}>  
             <Grid item xs={12} md={4}>  
                 <img src={book.cover_image_url} alt={book.title} className={styles.bookImage} />  
-                <Button variant="contained" color="primary" className={styles.swapButton}>  
-                Swap 
-                </Button>
-                <Typography variant="body2" className={styles.messageOwner}>  
-                Message the owner  
-                </Typography>  
-                <Box display="flex" alignItems="center" className={styles.ownerSection}>  
-                <div className={styles.ownerImage}>
+                {user._id && user._id !== book.user._id && <Button variant='contained' color='primary' onClick={handleSwap}>Swap</Button>}
+                <SwapModal open={swapModalOpen} onClose={() => setSwapModalOpen(false)} book={book} user={user} />
 
-                </div>  
+                <Box display="flex" alignItems="center" className={styles.ownerSection}>  
+                <Avatar alt={book.user.username} src={book.user.avatar} className={styles.ownerAvatar}/>
+                 
                 <Typography variant="body2" className={styles.ownerName}>  
                     {book.user.username}
                 </Typography>  
-                <Button variant="outlined" color="primary" className={styles.messageButton}>  
-                    Message  
-                </Button>  
+                {user._id !== book.user._id &&  
+                    <Button variant="outlined" color="primary" className={styles.messageButton}>  
+                        Message  
+                    </Button> }
+                
                 </Box>  
             </Grid>  
             <Grid item xs={12} md={8}>  

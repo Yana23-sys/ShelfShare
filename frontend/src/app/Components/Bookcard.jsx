@@ -1,5 +1,5 @@
 import Link from 'next/link';  
-import { Card, CardContent, CardMedia, Typography, Button } from '@mui/material';  
+import { Card, CardContent, CardMedia, Typography } from '@mui/material';  
 import styles from '../Styles/Bookcard.module.css';  
   
 const BookCard = ({ book }) => {  
@@ -27,9 +27,6 @@ const BookCard = ({ book }) => {
           <Typography className={styles.bookOwner} variant="body2" color="text.secondary">  
             @{book.user.username} ({book.user.location})
           </Typography>  
-          <Button variant="contained" color="primary" className={styles.bookSwapButton}>  
-            Swap  
-          </Button>  
         </CardContent>  
       </Card>  
   );  
