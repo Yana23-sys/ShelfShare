@@ -15,4 +15,6 @@ const findUserByName = (username) => {
   return User.findOne({ username })
 }
 
-module.exports = { User, findUserByName }
+const findAllUsers = () => User.find({})
+
+module.exports = { User, findUserByName, findAllUsers }

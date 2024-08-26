@@ -64,6 +64,20 @@ describe("/api/books", () => {
           });
         });
     });
+    test("200: returns all books for given user", () => {
+      const userId = testData.users[0]._id;
+
+      return request(app)
+        .get(`/api/books?user_id=${userId}`)
+        .expect(200)
+        .then(({ body }) => {
+          expect(body.books).toHaveLength(2);
+
+          body.books.forEach((book) => {
+            expect(book.user._id).toEqual(userId.toString());
+          });
+        });
+    });
   });
 
   describe("POST", () => {
@@ -290,3 +304,14 @@ describe("GET /api/books, for sort_by query", () => {
       });
   });
 });
+
+describe("GET /api/users", () => {
+  test("200: responds with an array of users", () => {
+    return request(app)
+      .get("/api/users")
+      .expect(200)
+      .then(({ body }) => {
+        expect(body.users.length).toEqual(5);
+      });
+  });
+})
