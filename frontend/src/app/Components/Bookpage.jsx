@@ -9,17 +9,30 @@ const BookPage = ({book}) => {
   const { user, setUser } = useContext(UserContext);
   const [swapModalOpen, setSwapModalOpen] = useState(false);
 
-  const handleSwap = () => {
+  const handleSwapModalOpen = () => {
     setSwapModalOpen(true);
   };
+
+  const handleSwapConfirm = (swap) => {
+    // TODO: Send POST request to BE to creare swap
+    console.log(swap)
+  }
 
 return (  
     <Container className={styles.bookPage}>  
         <Grid container spacing={4}>  
             <Grid item xs={12} md={4}>  
                 <img src={book.cover_image_url} alt={book.title} className={styles.bookImage} />  
-                {user._id && user._id !== book.user._id && <Button variant='contained' color='primary' onClick={handleSwap}>Swap</Button>}
-                <SwapModal open={swapModalOpen} onClose={() => setSwapModalOpen(false)} book={book} user={user} />
+                {user._id && user._id !== book.user._id && (<>
+                    <Button variant='contained' color='primary' onClick={handleSwapModalOpen}>Swap</Button>
+                    <SwapModal 
+                        open={swapModalOpen} 
+                        onClose={() => setSwapModalOpen(false)} 
+                        book={book} 
+                        user={user} 
+                        onConfirm={handleSwapConfirm}
+                    />
+                </>)}
 
                 <Box display="flex" alignItems="center" className={styles.ownerSection}>  
                 <Avatar alt={book.user.username} src={book.user.avatar} className={styles.ownerAvatar}/>
