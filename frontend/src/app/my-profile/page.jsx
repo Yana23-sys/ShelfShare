@@ -1,8 +1,10 @@
 "use client";
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 import { UserContext } from "../Contexts/UserContext";
 import { Container, Grid, Paper, Typography, Button, Box, Avatar } from '@mui/material';  
 import styles from '../Styles/MyProfile.module.css';
+import { useRouter } from 'next/navigation';
+
 
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
@@ -13,7 +15,7 @@ import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import Chip from '@mui/material/Chip';
 
-
+//TODO: Use real data from user context
 const swaps = [
     {
         _id: '1',
@@ -87,7 +89,18 @@ const SwapList = ({ swaps, currentUser }) => {
 
 const MyProfile = () => {
    const { user, setUser } = useContext(UserContext);
+   const router = useRouter()
    
+   useEffect(() => {
+     if (!user._id) {
+        router.push('/login')
+     }
+   }, [])
+
+   if (!user._id) {
+    return null
+   }
+
    return (
     <Container className={styles.profilePage}>  
       <Grid container spacing={4}>  
@@ -109,6 +122,16 @@ const MyProfile = () => {
         <Grid item xs={12} md={8}>  
           <Paper className={styles.profileSectionCard}>  
             <Typography variant="h6" className={styles.sectionTitle}>My Books</Typography>  
+            <List>
+                {(user.books || []).map((book) => (
+                    <ListItem key={book._id}>
+                        <ListItemAvatar>
+                            <Avatar src={book.cover_image_url} alt={book.title} variant="square"/>
+                        </ListItemAvatar>
+                        <ListItemText primary={`${book.title} (${book.publication_year})`} secondary={book.author} />
+                    </ListItem>
+                ))}
+            </List>
           </Paper>  
           <Paper className={styles.profileSectionCard}>  
             <Typography variant="h6" className={styles.sectionTitle}>Current Swaps</Typography>  

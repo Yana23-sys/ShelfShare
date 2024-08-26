@@ -7,6 +7,10 @@ body {
   text-decoration: none;
 }
 
+body::-webkit-scrollbar {
+  display: none;
+}
+
 a:link {
   text-decoration: none;
 }

@@ -23,3 +23,13 @@ export const getBookById = (id) => {
         throw error
       })
 }
+
+export const getAllBooksByUserId = (userId) => {
+  return api.get(`/books?user_id=${userId}`)
+      .then(response => {
+        return response.data.books})
+      .catch(error => {
+        console.error('Error getting books from api:', error)
+        throw error
+      })
+}
