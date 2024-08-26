@@ -1,6 +1,6 @@
 const express = require('express')
 const { getAllBooks, createBook, getBookById } = require('./controllers/books')
-const { createSwap, getAllSwapsByUserId } = require('./controllers/swaps')
+const { createSwap, getAllSwapsByUserId, updateSwap } = require('./controllers/swaps')
 const { getAllUsers } = require('./controllers/users')
 const { getEndpoints } = require('./controllers')
 const { serverErrorHandler } = require('./error-handlers')
@@ -20,6 +20,7 @@ app.get("/api/books/:bookId", getBookById)
 
 app.post('/api/swaps', createSwap)
 app.get('/api/swaps', getAllSwapsByUserId)
+app.patch('/api/swaps/:swapId', updateSwap)
  
 app.all('*', (req, res, next) => {
     res.status(404).send({message: 'path not found'})

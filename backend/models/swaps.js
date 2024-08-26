@@ -18,6 +18,20 @@ const swapSchema = new mongoose.Schema({
 
 const Swap = mongoose.model("Swap", swapSchema);
 
+
+// Middleware to update date_updated on findOneAndUpdate
+Swap.pre('findOneAndUpdate', function(next) {
+  this.set({ date_updated: Date.now() });
+  next();
+});
+
+// Middleware to update date_updated on updateOne
+Swap.pre('updateOne', function(next) {
+  this.set({ date_updated: Date.now() });
+  next();
+});
+
+
 const insertSwap = async (swap) => {
   const newSwap = {
     sender: ObjectId.createFromHexString(swap.sender),
@@ -43,4 +57,11 @@ const findAllSwapsByUserId = async (userId) => {
     .populate("receiver_book");
 };
 
-module.exports = { insertSwap, findAllSwapsByUserId };
+const updateSwapStatus = async (swapId, status) => {
+  // updateOne returns query result obj with details about the update operation
+  const result = await Swap.updateOne({ _id: ObjectId.createFromHexString(swapId) }, { status });
+  // if document does not exist modify count will be 0
+  return result.matchedCount > 0;
+};
+
+module.exports = { insertSwap, findAllSwapsByUserId, updateSwapStatus };
