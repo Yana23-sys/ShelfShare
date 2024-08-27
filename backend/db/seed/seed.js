@@ -41,7 +41,7 @@ const seedMongoDB = async ({books, users, genres, messages}) => {
     // Seed messages
     const newMessages = await seedCollection(db, messages, 'messages')
 
-    console.log('Database seeding complete.')
+    // console.log('Database seeding complete.')
 
     return {users: newUsers, genres: newGenres, books: newBooks, messages: newMessages}
   } catch (err) {
