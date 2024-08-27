@@ -1,0 +1,17 @@
+.container {
+  padding: 20px;
+}
+
+.sortByContainer {
+  display: flex;
+  justify-content: center; /* Center horizontally */
+  margin-bottom: 20px;
+}
+
+.sortByControl {
+  width: 200px; /* Adjust width as needed */
+}
+
+.bookGrid {
+  margin-top: 20px;
+}
