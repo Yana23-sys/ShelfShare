@@ -11,7 +11,7 @@ const swapSchema = new mongoose.Schema({
   date_updated: { type: Date, default: Date.now },
   status: {
     type: String,
-    enum: ["pending", "accepted", "rejected", "completed"],
+    enum: ["pending", "accepted", "rejected", "completed", "canceled"],
     default: "pending",
   },
 });
