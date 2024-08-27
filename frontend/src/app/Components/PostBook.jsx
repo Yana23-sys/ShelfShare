@@ -37,7 +37,8 @@ const PostBook = () => {
     description: "",
     publishedYear: "",
     imageUrl: "",
-    user: user?.username || "",
+    postedDate: "",
+    user: user.username || ""
   });
 
   const handleChange = (event) => {
@@ -70,8 +71,11 @@ const PostBook = () => {
       publication_year: formData.publishedYear,
       description: formData.description,
       cover_image_url: formData.imageUrl,
+      posted_date: new Date(),
       username: user.username,
     };
+
+    console.log("Book data:", bookData);
 
     postBook(bookData)
       .then((data) => {
@@ -84,6 +88,7 @@ const PostBook = () => {
           description: "",
           publishedYear: "",
           imageUrl: "",
+          postedDate: "",
           user: user.username || "",
         });
 
