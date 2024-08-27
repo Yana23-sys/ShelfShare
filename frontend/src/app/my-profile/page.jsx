@@ -88,10 +88,10 @@ const MyProfile = () => {
         );
         const updatedCompleted = [
           ...prevSwaps.completed,
-          ...updatedPending.filter(swap => swap.status !== "pending")
+          ...updatedPending.filter(swap => swap.status === "rejected" || swap.status === "completed")
         ];
         return {
-          pending: updatedPending.filter(swap => swap.status === "pending"),
+          current: updatedCurrent.filter(swap => swap.status === "pending" || swap.status === "accepted"),
           completed: updatedCompleted
         };
       });
