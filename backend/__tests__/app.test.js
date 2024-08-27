@@ -1,7 +1,10 @@
 const data = require("../db/seed/data");
 const { seedMongoDB } = require("../db/seed/seed");
 const config = require("../config");
-const {connectToMongo, disconnectFromMongo} = require("../db/mongodb-connection");
+const {
+  connectToMongo,
+  disconnectFromMongo,
+} = require("../db/mongodb-connection");
 const request = require("supertest");
 const app = require("../app");
 const endpoints = require("../controllers/endpoints");
@@ -9,14 +12,17 @@ require("jest-extended");
 
 let testData = {};
 
-beforeEach(async () => {
-  testData = await seedMongoDB(data);
-});
-
+// Connect to MongoDB before all tests
 beforeAll(async () => {
   await connectToMongo(config.mongo.uri);
 });
 
+// Seed the database with test data before each test
+beforeEach(async () => {
+  testData = await seedMongoDB(data);
+});
+
+// Disconnect from MongoDB after all tests
 afterAll(async () => {
   await disconnectFromMongo();
 });
@@ -314,4 +320,4 @@ describe("GET /api/users", () => {
         expect(body.users.length).toEqual(5);
       });
   });
-})
+});

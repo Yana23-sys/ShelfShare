@@ -1,7 +1,6 @@
 const mongoose = require("mongoose");
-const ObjectId = mongoose.Types.ObjectId
+const ObjectId = mongoose.Types.ObjectId;
 const Schema = mongoose.Schema;
-
 
 const bookSchema = new mongoose.Schema({
   title: { type: String, required: true },
@@ -31,9 +30,9 @@ const findAllBooks = async (sortCriteria = {}, filterCriteria = {}) => {
       sort = { title: 1 }; // Default sort by title (ascending)
     }
 
-    let filter = {}
+    let filter = {};
     if (filterCriteria.user_id) {
-      filter['user._id'] = new ObjectId(filterCriteria.user_id)
+      filter["user._id"] = new ObjectId(filterCriteria.user_id);
     }
 
     return await Book.aggregate([
@@ -57,20 +56,18 @@ const findAllBooks = async (sortCriteria = {}, filterCriteria = {}) => {
       { $unwind: "$genre" },
       { $match: filter },
       { $sort: sort },
-    ])
+    ]);
   } catch (err) {
     console.error("Error fetching books:", err);
     throw err;
   }
-}
+};
 
 const insertBook = (newBook) => {
-  return new Book(newBook)
-    .save()
-    .catch((err) => {
-      console.error("Error inserting book:", err);
-      throw err;
-    });
+  return new Book(newBook).save().catch((err) => {
+    console.error("Error inserting book:", err);
+    throw err;
+  });
 };
 
 const findBookById = (id) => {
