@@ -1,60 +1,12 @@
 "use client";
 import { useContext, useEffect, useState } from "react";
 import { UserContext } from "../Contexts/UserContext";
-import { Container, Grid, Paper, Typography, Button, Box, Avatar, IconButton } from '@mui/material';  
+import { Container, Grid, Paper, Typography, Button, Box, Avatar, IconButton, List, ListItem, ListItemAvatar, ListItemText } from '@mui/material';  
 import styles from '../Styles/MyProfile.module.css';
 import { useRouter } from 'next/navigation';
 import { getAllSwapsByUserId, updateSwap } from "../api/swaps";
+import SwapList from "../Components/SwapList";
 
-
-import List from '@mui/material/List';
-import ListItem from '@mui/material/ListItem';
-import ListItemAvatar from '@mui/material/ListItemAvatar';
-import ListItemText from '@mui/material/ListItemText';
-// import Avatar from '@mui/material/Avatar';
-import ArrowBackIcon from '@mui/icons-material/ArrowBack';
-import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
-import Chip from '@mui/material/Chip';
-import DoneIcon from '@mui/icons-material/Done';
-import ClearIcon from '@mui/icons-material/Clear';
-
-
-const SwapList = ({ swaps = [], currentUser, onSwapUpdate }) => {
-    return (
-        <List dense={false}>
-            {swaps.map((swap) => (
-                <ListItem 
-                    key={swap._id}
-                    secondaryAction={
-                        swap.status === "pending" && currentUser._id === swap.receiver._id &&
-                        <>
-                          <IconButton color="success" aria-label="ok" onClick={() => onSwapUpdate(swap._id, "accepted")}>
-                            <DoneIcon />
-                          </IconButton> 
-                          <IconButton aria-label="cancel" color="error" onClick={() => onSwapUpdate(swap._id, "rejected")}>
-                            <ClearIcon />
-                          </IconButton> 
-                        </> ||
-                        swap.status === "pending" && currentUser._id === swap.sender._id && 
-                        <Chip label={swap.status} color="info" /> ||
-                        swap.status === "accepted" && <Chip label={swap.status} color="success" /> ||
-                        swap.status === "rejected" && <Chip label={swap.status} color="error" />
-                    }
-                >
-                    <ListItemAvatar>
-                    <Avatar>
-                        {currentUser._id === swap.sender._id ? <ArrowForwardIcon /> : <ArrowBackIcon />}
-                    </Avatar>
-                    </ListItemAvatar>
-                    <ListItemText
-                    primary={`${swap.sender_book.title} (${currentUser._id === swap.sender._id ? "Me" : swap.sender.username}) ↔️ ${swap.receiver_book.title} (${currentUser._id === swap.receiver._id ? "Me" : swap.receiver.username})`}
-                    />
-                </ListItem>
-            )
-            )}
-        </List>
-    )
-}
 
 const MyProfile = () => {
    const [swaps, setSwaps] = useState({completed: [], pending: []})
@@ -70,7 +22,10 @@ const MyProfile = () => {
             const pending = swaps.filter(
                 (swap) => swap.status === "accepted" || swap.status === "pending");
               const completed = swaps.filter(
-                (swap) => swap.status === "rejected" || swap.status === "completed");
+                (swap) => swap.status === "rejected" || 
+                swap.status === "completed" || 
+                (swap.status === "canceled" && swap.sender._id === user._id)
+              );
               setSwaps({pending, completed})
         })
      }
@@ -83,17 +38,27 @@ const MyProfile = () => {
    const handleSwapUpdate = (swapId, status) => {
     return updateSwap({ swapId, status }).then(() => {
       setSwaps((prevSwaps) => {
-        const updatedPending = prevSwaps.pending.map(swap => 
-          swap._id === swapId ? { ...swap, status } : swap
-        );
-        const updatedCompleted = [
-          ...prevSwaps.completed,
-          ...updatedPending.filter(swap => swap.status === "rejected" || swap.status === "completed")
-        ];
-        return {
-          current: updatedCurrent.filter(swap => swap.status === "pending" || swap.status === "accepted"),
-          completed: updatedCompleted
-        };
+        const updatedPending = prevSwaps.pending
+            .map((swap) =>
+              swap._id === swapId ? { ...swap, status } : swap
+            )
+            .filter((swap) => swap.status === "accepted" || swap.status === "pending");
+
+          const updatedCompleted = [
+            ...prevSwaps.completed,
+            ...prevSwaps.pending.filter(
+              (swap) =>
+                swap._id === swapId &&
+                (swap.status === "rejected" ||
+                  swap.status === "completed" ||
+                  swap.status === "canceled")
+            ),
+          ];
+
+          return {
+            pending: updatedPending,
+            completed: updatedCompleted,
+          };
       });
     })
     .catch((error) => {
