@@ -5,6 +5,7 @@ const {
 } = require("../models/swaps");
 const { findUserById } = require("../models/users");
 const { findBookById } = require("../models/books");
+const mongoose = require("mongoose");
 
 const acceptedStatuses = ["pending", "accepted", "rejected", "completed"]
 
@@ -27,13 +28,17 @@ exports.getAllSwapsByUserId = async (req, res, next) => {
   }
 };
 
-exports.createSwap = async (req, res, next) => {
+exports.createBookSwap = async (req, res, next) => {
   const { sender, receiver, sender_book, receiver_book } = req.body;
 
   if (!sender || !receiver || !sender_book || !receiver_book) {
     return res
       .status(400)
       .send({ message: "Please provide all required fields" });
+  }
+
+  if (!mongoose.Types.ObjectId.isValid(sender) || !mongoose.Types.ObjectId.isValid(sender_book)) {
+    return res.status(400).send({ message: "Invalid ID format" });
   }
 
   const senderEntity = await findUserById(sender);

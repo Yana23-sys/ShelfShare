@@ -1,6 +1,6 @@
 const express = require('express')
 const { getAllBooks, createBook, getBookById } = require('./controllers/books')
-const { createSwap, getAllSwapsByUserId, updateSwap } = require('./controllers/swaps')
+const { createBookSwap, getAllSwapsByUserId, updateSwap } = require('./controllers/swaps')
 const { getAllUsers } = require('./controllers/users')
 const { getEndpoints } = require('./controllers')
 const { serverErrorHandler } = require('./error-handlers')
@@ -18,7 +18,7 @@ app.get('/api/books', getAllBooks)
 app.post('/api/books', createBook)
 app.get("/api/books/:bookId", getBookById)
 
-app.post('/api/swaps', createSwap)
+app.post('/api/swaps', createBookSwap)
 app.get('/api/swaps', getAllSwapsByUserId)
 app.patch('/api/swaps/:swapId', updateSwap)
  

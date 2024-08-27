@@ -10,9 +10,7 @@ const userSchema = new mongoose.Schema({
   password: { type: String, required: true },
   location: { type: String },
 });
-
 const User = mongoose.model('User', userSchema);
-
 const findUserByName = (username) => {
   return User.findOne({ username })
 }

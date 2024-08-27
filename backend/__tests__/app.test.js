@@ -317,23 +317,87 @@ describe("GET /api/users", () => {
 })
 
 describe("/api/swaps", () => {
-  describe("POST /api/swaps" , () => {
-    test("201: creates a new swap", () => {
-      const newSwap = {
-        sender: testData.users[0]._id.toString(),
-        receiver: testData.users[1]._id.toString(),
-        sender_book: testData.books[0]._id.toString(),
-        receiver_book: testData.books[1]._id.toString()
-      };
+  describe("POST", () => {
+  test("201: creates a new swap", () => {
+    const newSwap = {
+      sender: testData.users[0]._id.toString(),
+      receiver: testData.users[1]._id.toString(),
+      sender_book: testData.books[0]._id.toString(),
+      receiver_book: testData.books[1]._id.toString()
+    };
+    return request(app)
+      .post("/api/swaps")
+      .send(newSwap)
+      .expect(201)
+      .then(({ body }) => {
+        console.log(body)
+        expect(body.swap).toMatchObject(newSwap);
+        expect(body.swap.status).toBe("pending");
+      });
+  });
 
-      return request(app)
-        .post("/api/swaps")
-        .send(newSwap)
-        .expect(201)
-        .then(({ body }) => {
-          expect(body.swap).toMatchObject(newSwap);
-          expect(body.swap.status).toBe("pending");
-        });
-    });
+  test("400: responds with error code 400 when some information is not provided", () => {
+    const newSwap = {
+      sender: testData.users[0]._id.toString(),
+      receiver: testData.users[1]._id.toString(),
+      receiver_book: testData.books[1]._id.toString()
+    };
+    return request(app)
+    .post("/api/swaps")
+    .send(newSwap)
+    .expect(400)
+    .then(({body}) => {
+      expect(body.message).toBe("Please provide all required fields")
+    })
   })
+
+  test("400: responds with error code 400 when an invalid ID is given", () => {
+    const newSwap = {
+      sender: "113545",
+      receiver: testData.users[1]._id.toString(),
+      sender_book: testData.books[0]._id.toString(),
+      receiver_book: testData.books[1]._id.toString()
+    };
+    return request(app)
+    .post("/api/swaps")
+    .send(newSwap)
+    .expect(400)
+    .then(({body}) => {
+      expect(body.message).toBe("Invalid ID format")
+    })
+  })
+
+  test("404: responds with error code 404 when a non-existent user Id is provided", () => {
+    const newSwap = {
+      sender: "66cda4cd325ea63cf40758b2",
+      receiver: testData.users[1]._id.toString(),
+      sender_book: testData.books[0]._id.toString(),
+      receiver_book: testData.books[1]._id.toString()
+    };
+    return request(app)
+    .post("/api/swaps")
+    .send(newSwap)
+    .expect(404)
+    .then(({body}) => {
+      expect(body.message).toBe("Non existent userId provided")
+    })
+  })
+
+  test("404: responds with error code 404 when a non-existent book Id is provided", () => {
+    const newSwap = {
+      sender: testData.users[0]._id.toString(),
+      receiver: testData.users[1]._id.toString(),
+      sender_book: "66cda4ce123ea63cf20259ad",
+      receiver_book: testData.books[1]._id.toString()
+    };
+    return request(app)
+    .post("/api/swaps")
+    .send(newSwap)
+    .expect(404)
+    .then(({body}) => {
+      expect(body.message).toBe("Non existent bookId provided")
+    })
+  })
+
+})
 })
