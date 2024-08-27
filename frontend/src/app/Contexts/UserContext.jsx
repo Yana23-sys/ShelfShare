@@ -4,20 +4,19 @@ import { getAllBooksByUserId } from "../api/books";
 export const UserContext = createContext();
 
 export const UserProvider = (props) => {
-   const [user, setUser] = useState({});
+  const [user, setUser] = useState({});
 
-   useEffect(() => {
-      if (user._id) {
-         getAllBooksByUserId(user._id)
-         .then((books) => setUser({...user, books}))
-      }
-   }, [user._id]);
-   // TODO: fetch users swap requests
-   // getAllSwapsByUserId(user._id) -> GET /swaps?user_id=userId
+  useEffect(() => {
+    if (user._id) {
+      getAllBooksByUserId(user._id).then((books) => {
+         setUser({ ...user, books });
+      })
+    }
+  }, [user._id]);
 
-   return (
-      <UserContext.Provider value={{ user, setUser }}>
-         {props.children}
-      </UserContext.Provider>
-   );
+  return (
+    <UserContext.Provider value={{ user, setUser }}>
+      {props.children}
+    </UserContext.Provider>
+  );
 };

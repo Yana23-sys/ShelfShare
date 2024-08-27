@@ -4,6 +4,7 @@ import BookPage from "../../Components/Bookpage";
 import { useState, useEffect } from "react";
 import { getBookById } from "../../api/books";
 import { useParams } from "next/navigation";
+import { createSwap } from "../../api/swaps";
 
 const IndividualBookPage = () => {
 
@@ -17,7 +18,7 @@ const IndividualBookPage = () => {
 
   return (
     <section>
-      <BookPage book={book} />
+      <BookPage book={book} onSwap={createSwap} />
     </section>
   );
 };

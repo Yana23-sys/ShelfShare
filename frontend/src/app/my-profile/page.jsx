@@ -1,9 +1,10 @@
 "use client";
-import { useContext, useEffect } from "react";
+import { useContext, useEffect, useState } from "react";
 import { UserContext } from "../Contexts/UserContext";
 import { Container, Grid, Paper, Typography, Button, Box, Avatar } from '@mui/material';  
 import styles from '../Styles/MyProfile.module.css';
 import { useRouter } from 'next/navigation';
+import { getAllSwapsByUserId } from "../api/swaps";
 
 
 import List from '@mui/material/List';
@@ -15,54 +16,8 @@ import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import Chip from '@mui/material/Chip';
 
-//TODO: Use real data from user context
-const swaps = [
-    {
-        _id: '1',
-        sender: {
-            _id: '1',
-            username: 'user1'
-        },
-        receiver: {
-            _id: '2',
-            username: 'user2'
-        },
-        senderBook: {
-            _id: '1',
-            title: 'book1'
-        },
-        receiverBook: {
-            _id: '2',
-            title: 'book2'
-        },
-        status: 'pending',
-        createdDate: new Date(),
-        updatedDate: new Date() 
-    },
-    {
-        _id: '3',
-        sender: {
-            username: 'user1'
-        },
-        receiver: {
-            _id: '2',
-            username: 'user2'
-        },
-        senderBook: {
-            _id: '1',
-            title: 'bookTest1'
-        },
-        receiverBook: {
-            _id: '2',
-            title: 'bookTest2'
-        },
-        status: 'pending',
-        createdDate: new Date(),
-        updatedDate: new Date() 
-    }
-]
 
-const SwapList = ({ swaps, currentUser }) => {
+const SwapList = ({ swaps = [], currentUser }) => {
     return (
         <List dense={false}>
             {swaps.map((swap) => (
@@ -78,7 +33,7 @@ const SwapList = ({ swaps, currentUser }) => {
                     </Avatar>
                     </ListItemAvatar>
                     <ListItemText
-                    primary={`${swap.senderBook.title}-(${swap.sender.username}) ↔️ ${swap.receiverBook.title}-(${swap.receiver.username})`}
+                    primary={`${swap.sender_book.title} (${swap.sender.username}) ↔️ ${swap.receiver_book.title} (${swap.receiver.username})`}
                     />
                 </ListItem>
             )
@@ -88,12 +43,31 @@ const SwapList = ({ swaps, currentUser }) => {
 }
 
 const MyProfile = () => {
+   const [swaps, setSwaps] = useState({completed: [], pending: []})
    const { user, setUser } = useContext(UserContext);
    const router = useRouter()
+
+   console.log(user.swaps)
    
    useEffect(() => {
      if (!user._id) {
         router.push('/login')
+     } else {
+        getAllSwapsByUserId(user._id).then((swaps) => {
+            const pending = swaps.filter(
+                (swap) =>
+                  swap.status === "pending" ||
+                  swap.status === "accepted" ||
+                  swap.status === "processing"
+              );
+              const completed = swaps.filter(
+                (swap) =>
+                  swap.status === "completed" ||
+                  swap.status === "cancelled" ||
+                  swap.status === "declined"
+              );
+              setSwaps({pending, completed})
+        })
      }
    }, [])
 
@@ -135,11 +109,11 @@ const MyProfile = () => {
           </Paper>  
           <Paper className={styles.profileSectionCard}>  
             <Typography variant="h6" className={styles.sectionTitle}>Current Swaps</Typography>  
-            <SwapList swaps={swaps} currentUser={user} />
+            <SwapList swaps={swaps.pending} currentUser={user} />
           </Paper>  
           <Paper className={styles.profileSectionCard}>  
             <Typography variant="h6" className={styles.sectionTitle}>Previous Swaps</Typography>  
-            <SwapList swaps={swaps} currentUser={user} />
+            <SwapList swaps={swaps.completed} currentUser={user} />
           </Paper>  
         </Grid>  
       </Grid>  

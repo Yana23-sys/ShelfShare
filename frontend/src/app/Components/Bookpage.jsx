@@ -5,7 +5,7 @@ import { UserContext } from "../Contexts/UserContext";
 import { useContext, useState } from 'react';
 
 
-const BookPage = ({book}) => {
+const BookPage = ({book, onSwap}) => {
   const { user, setUser } = useContext(UserContext);
   const [swapModalOpen, setSwapModalOpen] = useState(false);
 
@@ -16,6 +16,7 @@ const BookPage = ({book}) => {
   const handleSwapConfirm = (swap) => {
     // TODO: Send POST request to BE to creare swap
     console.log(swap)
+    onSwap(swap)
   }
 
 return (  

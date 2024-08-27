@@ -33,7 +33,7 @@ const findAllBooks = async (sortCriteria = {}, filterCriteria = {}) => {
 
     let filter = {}
     if (filterCriteria.user_id) {
-      filter['user._id'] = new ObjectId(filterCriteria.user_id)
+      filter['user._id'] = ObjectId.createFromHexString(filterCriteria.user_id)
     }
 
     return await Book.aggregate([
