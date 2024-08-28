@@ -38,7 +38,8 @@ const findAllBooks = async (sortCriteria = {}, filterCriteria = {}) => {
       filter["user.location"] = filterCriteria.location; // Filter by user location
     }
 
-    return await Book.aggregate([
+    // Ensure the filter is applied correctly
+    const books = await Book.aggregate([
       {
         $lookup: {
           from: "users",
@@ -60,6 +61,8 @@ const findAllBooks = async (sortCriteria = {}, filterCriteria = {}) => {
       { $match: filter },
       { $sort: sort },
     ]);
+
+    return books;
   } catch (err) {
     console.error("Error fetching books:", err);
     throw err;
