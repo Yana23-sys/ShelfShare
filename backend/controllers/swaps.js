@@ -7,7 +7,7 @@ const { findUserById } = require("../models/users");
 const { findBookById } = require("../models/books");
 const mongoose = require("mongoose");
 
-const acceptedStatuses = ["pending", "accepted", "rejected", "completed"]
+const acceptedStatuses = ["pending", "accepted", "rejected", "completed", "canceled"]
 
 exports.getAllSwapsByUserId = async (req, res, next) => {
   const { user_id } = req.query;
