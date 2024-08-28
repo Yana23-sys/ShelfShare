@@ -11,9 +11,9 @@ const DEFAULT_COVER_IMAGE_URL =
 exports.getAllBooks = async (req, res, next) => {
   try {
     // Extract sorting criteria from query parameters
-    const { sort_by, user_id } = req.query;
+    const { sort_by, user_id, location } = req.query;
     let sortCriteria = {};
-    let filterCriteria = { user_id }; // Implement filtering if needed
+    let filterCriteria = { user_id, location }; // Implement filtering if needed
 
     // Validate and set sort criteria
     if (sort_by === "genre" || sort_by === "author" || sort_by === "location") {

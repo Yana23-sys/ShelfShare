@@ -78,6 +78,21 @@ describe("/api/books", () => {
           });
         });
     });
+
+    test("200: returns all books for given location", () => {
+      const userId = testData.users[0]._id;
+
+      return request(app)
+        .get(`/api/books?location=London, UK`)
+        .expect(200)
+        .then(({ body }) => {
+          expect(body.books).toHaveLength(2);
+
+          body.books.forEach((book) => {
+            expect(book.user.location).toBe("London, UK");
+          });
+        });
+    });
   });
 
   describe("POST", () => {

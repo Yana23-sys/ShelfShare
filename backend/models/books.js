@@ -36,6 +36,10 @@ const findAllBooks = async (sortCriteria = {}, filterCriteria = {}) => {
       filter['user._id'] = ObjectId.createFromHexString(filterCriteria.user_id)
     }
 
+    if (filterCriteria.location) {
+      filter['user.location'] = filterCriteria.location
+    }
+
     return await Book.aggregate([
       {
         $lookup: {
