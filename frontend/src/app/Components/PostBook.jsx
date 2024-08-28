@@ -1,5 +1,3 @@
-// UserContext needs adding to this file!!
-
 "use client";
 import React, { useState } from "react";
 import {
@@ -11,10 +9,12 @@ import {
   MenuItem,
   InputLabel,
   FormControl,
+  Alert,
 } from "@mui/material";
 
 import { UserContext } from "../Contexts/UserContext";
 import { useContext } from "react";
+import { postBook } from "../api/post-book";
 
 const genres = [
   "Fiction",
@@ -28,14 +28,17 @@ const genres = [
 
 const PostBook = () => {
   const { user } = useContext(UserContext);
+  const [error, setError] = useState("");
 
   const [formData, setFormData] = useState({
     title: "",
     author: "",
     genre: "",
     description: "",
+    publishedYear: "",
     imageUrl: "",
-    owner: user?.username || "",
+    postedDate: "",
+    user: user.username || "",
   });
 
   const handleChange = (event) => {
@@ -55,22 +58,52 @@ const PostBook = () => {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    // Handle form submission, e.g., send data to an API once it's set up and ready.
-    console.log("Form Data:", formData);
-    setFormData({
-      title: "",
-      author: "",
-      genre: "",
-      description: "",
-      imageUrl: "",
-      owner: "",
-    });
+
+    if (!user) {
+      setError("You must be logged in to post a book.");
+      return;
+    }
+
+    const bookData = {
+      title: formData.title,
+      author: formData.author,
+      genre: formData.genre,
+      publication_year: formData.publishedYear,
+      description: formData.description,
+      cover_image_url: formData.imageUrl,
+      posted_date: new Date(),
+      username: user.username,
+    };
+
+    console.log("Book data:", bookData);
+
+    postBook(bookData)
+      .then((data) => {
+        console.log("Book posted successfully:", data);
+
+        setFormData({
+          title: "",
+          author: "",
+          genre: "",
+          description: "",
+          publishedYear: "",
+          imageUrl: "",
+          postedDate: "",
+          user: user.username || "",
+        });
+
+        setError("");
+      })
+      .catch((err) => {
+        setError("There was an error posting the book. Please try again.");
+      });
   };
 
   return (
     <Container>
       <Box>
         <form onSubmit={handleSubmit}>
+          {error && <Alert severity="error">{error}</Alert>}
           <TextField
             label="Title"
             name="title"
@@ -88,6 +121,14 @@ const PostBook = () => {
             fullWidth
             margin="normal"
             required
+          />
+          <TextField
+            label="Year Published"
+            name="publishedYear"
+            value={formData.publishedYear}
+            onChange={handleChange}
+            margin="normal"
+            fullWidth
           />
           <FormControl fullWidth margin="normal" required>
             <InputLabel>Genre</InputLabel>
@@ -139,4 +180,4 @@ const PostBook = () => {
 
 export default PostBook;
 
-//Post
+//Post book
