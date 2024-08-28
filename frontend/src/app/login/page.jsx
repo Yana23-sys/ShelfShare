@@ -4,7 +4,7 @@ import Login from "../Components/Login";
 import { useState, useEffect } from 'react'
 import {getAllUsers} from '../api/users';
 
-const loginPage = () => {
+const LoginPage = () => {
    const [users, setUsers] = useState([])
 
    useEffect(() => {
@@ -21,4 +21,4 @@ const loginPage = () => {
    );
 };
 
-export default loginPage;
+export default LoginPage;

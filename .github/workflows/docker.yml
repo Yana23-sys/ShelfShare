@@ -21,11 +21,11 @@ jobs:
           username: ${{ env.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_HUB_API_KEY }}
 
-      - name: Build and push Backend Docker image
+      - name: Build and push Docker images
         run: |-
-          BACKEND_IMAGE="${DOCKER_REPO_URI}/${DOCKER_USERNAME}/${APP_NAME}-backend"
-          docker build -t ${BACKEND_IMAGE}:latest -t ${BACKEND_IMAGE}:${GITHUB_SHA::8} backend/
-          docker push -a ${BACKEND_IMAGE}
           FRONTEND_IMAGE="${DOCKER_REPO_URI}/${DOCKER_USERNAME}/${APP_NAME}-frontend"
           docker build -t ${FRONTEND_IMAGE}:latest -t ${FRONTEND_IMAGE}:${GITHUB_SHA::8} frontend/
           docker push -a ${FRONTEND_IMAGE}
+          BACKEND_IMAGE="${DOCKER_REPO_URI}/${DOCKER_USERNAME}/${APP_NAME}-backend"
+          docker build -t ${BACKEND_IMAGE}:latest -t ${BACKEND_IMAGE}:${GITHUB_SHA::8} backend/
+          docker push -a ${BACKEND_IMAGE}
