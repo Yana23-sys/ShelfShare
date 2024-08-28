@@ -1,28 +1,38 @@
+import Map from "./Components/Map";
 import styles from "./Styles/page.module.css";
 import { Card, CardHeader, CardMedia } from "@mui/material";
 
 const Home = () => {
   return (
     <div>
-      <section className={styles.container}>
-        <h2 className={styles.subheading}>Welcome to ShelfShare!</h2>
-        <p className={styles.tag}>
-          Discover and exchange books with fellow readers in your community.
-        </p>
-      </section>
-      <section className={`${styles.container} ${styles.flexContainer}`}>
-        <img
-          className={`${styles.homepageImg} ${styles.flexItem}`}
-          src="https://static.vecteezy.com/system/resources/previews/015/411/389/non_2x/bookcase-with-books-book-shelves-with-multicolored-book-spines-illustration-in-flat-style-vector.jpg"
-          alt="Bookshelf full of books"
-        />
-        <ol className={`${styles.orderList} ${styles.flexItem}`}>
-          <strong>How ShelfShare Works:</strong>
-          <li>Sign up and create a profile.</li>
-          <li>List books you want to swap.</li>
-          <li>Browse available books and connect with other users.</li>
-        </ol>
-      </section>
+        <section>
+          <h2 className={styles.subheading}>Welcome to ShelfShare!</h2>
+          <p className={styles.tag}>
+            Discover and exchange books with fellow readers in your community.
+          </p>
+        </section>
+      <div className={styles.container}>
+        <section className={`${styles.container} ${styles.flexContainer}`}>
+          <ol className={`${styles.orderList} ${styles.flexItem}`}>
+            <strong>How ShelfShare Works:</strong>
+            <li>1. Sign up and create a profile.</li>
+            <li>2. List books you want to swap.</li>
+            <li>3. Browse available books and connect with other users.</li>
+          <img
+            className={`${styles.homepageImg} ${styles.flexItem}`}
+            src="https://static.vecteezy.com/system/resources/previews/015/411/389/non_2x/bookcase-with-books-book-shelves-with-multicolored-book-spines-illustration-in-flat-style-vector.jpg"
+            alt="Bookshelf full of books"
+          />
+          </ol>
+            <section className={styles.mapContainer}>
+              <strong className={styles.orderList}>Check the map for swaps in your area:</strong>
+              <p className={styles.container}>
+                Select a book location on the map to get started 🖗
+              </p>
+              <Map />
+            </section>
+        </section>
+      </div>
       <section className={styles.container}>
         <h2 className={styles.subheading}>Available Books</h2>
         <p className={styles.tag}>
