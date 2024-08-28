@@ -1,53 +1,101 @@
-.bookPage {  
-  padding: 20px;  
-}  
-  
-.bookImage {  
-  width: 100%;  
-  max-width: 300px;  
-  margin-bottom: 20px;  
-}  
-  
-.swapButton {  
-  width: 100%;  
-  margin-bottom: 10px;  
-}  
-  
-.messageOwner {  
-  margin-bottom: 10px;  
-}  
-  
-.ownerSection {  
-  margin-bottom: 20px;  
-}  
-  
-.ownerAvatar {  
-  width: 50px;  
-  height: 50px;  
-  border-radius: 50%;  
-  margin-right: 10px;  
-}  
-  
-.ownerName {  
-  margin-right: auto;  
-}  
-  
-.messageButton {  
-  text-transform: none;  
-}  
-  
-.bookTitle {  
-  font-weight: bold;  
-  margin-bottom: 10px;  
-}  
-  
-.bookAuthor {  
-  margin-bottom: 10px;  
-  font-weight: bold;  
-}  
-  
 
-  
-.bookDescription {  
-  white-space: pre-wrap;  
+.bookPage {
+  padding: 20px;
+  background-color: #f9f9f9;
+  border-radius: 10px;
+  max-width: 800px;
+  margin: 0 auto;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  font-family: 'Arial', sans-serif;
+}
+
+.bookImage {
+  width: 100%;
+  max-width: 300px;
+  margin-bottom: 20px;
+  border-radius: 8px;
+}
+
+.messageButton, .swapButton {
+  text-transform: none;
+  margin-right: 10px;
+  border-radius: 5px;
+  font-size: 16px;
+  border: none;
+  padding: 5px 10px;
+  outline: none;
+}
+
+.messageButton {
+  background-color: #28a745;
+  color: white;
+}
+
+.messageButton:hover {
+  background-color: #175f27;
+}
+
+.swapButton {
+  background-color: #007BFF;
+  color: white;
+}
+
+.swapButton:hover {
+  background-color: #0056b3;
+}
+
+.ownerSection {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  flex-wrap: wrap;
+  gap: 10px;
+  max-width: 100%;
+  background-color: rgb(217, 217, 217);
+  padding: 10px;
+  border-radius: 8px;
+}
+
+.ownerAvatar {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  margin-right: 10px;
+}
+
+.ownerName {
+  margin-right: auto;
+  font-weight: bold;
+}
+
+.bookTitle {
+  font-weight: bold;
+  margin-bottom: 10px;
+  text-align: left;
+  font-size: 30px;
+  color: #333;
+}
+
+.bookAuthor {
+  margin-bottom: 10px;
+  font-weight: bold;
+  text-align: left;
+  font-size: 18px;
+  color: #666;
+}
+
+.bookDescription {
+  white-space: pre-wrap;
+  text-align: left;
+  margin-bottom: 20px;
+  font-size: 18px;
+  color: #444;
+  line-height: 1.6;
+}
+
+.bookGenre, .userLocation {
+  margin-bottom: 5px;
+  text-align: left;
+  font-size: 16px;
+  color: #555;
 }
