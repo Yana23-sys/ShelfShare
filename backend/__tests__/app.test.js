@@ -330,7 +330,6 @@ describe("/api/swaps", () => {
       .send(newSwap)
       .expect(201)
       .then(({ body }) => {
-        console.log(body)
         expect(body.swap).toMatchObject(newSwap);
         expect(body.swap.status).toBe("pending");
       });
@@ -398,6 +397,63 @@ describe("/api/swaps", () => {
       expect(body.message).toBe("Non existent bookId provided")
     })
   })
+})
 
+  describe("POST and PATCH", () => {
+    test("201: creates a new swap and then 204: updates the swap status and creates a notification", async () => {
+      // Step 1: Create a new swap
+      const newSwap = {
+        sender: testData.users[0]._id.toString(),
+        receiver: testData.users[1]._id.toString(),
+        sender_book: testData.books[0]._id.toString(),
+        receiver_book: testData.books[1]._id.toString(),
+      };
+
+      const createSwapResponse = await request(app)
+        .post("/api/swaps")
+        .send(newSwap)
+        .expect(201);
+
+      const { swap } = createSwapResponse.body;
+
+      // Step 2: Update the status of the created swap
+      const updatedStatus = { status: "accepted" };
+
+      await request(app)
+        .patch(`/api/swaps/${swap._id}`)
+        .send(updatedStatus)
+        .expect(204);
+
+      // Step 3: Fetch notifications for the sender of the swap
+      const notificationsResponse = await request(app)
+        .get(`/api/notifications?userId=${newSwap.sender}&seen=false`)
+        .expect(200);
+
+      // Step 4: Assert that a notification was created
+      const notifications  = notificationsResponse.body;
+      console.log(newSwap, "notifications TEST")
+      console.log(notificationsResponse.body[0]._id, "notifications TEST")
+
+      // Patch 
+      await request(app)
+        .patch(`/api/notifications/${notificationsResponse.body[0]._id}`)
+        .send({ seen: true })
+        .expect(204);
+
+      const notificationsResponse2 = await request(app)
+        .get(`/api/notifications?userId=${newSwap.sender}&seen=true`)
+        .expect(200);
+
+        console.log(notificationsResponse2.body, "notifications TEST 2")
+
+      expect(notifications).toHaveLength(1);
+      expect(notifications[0].message).toContain("accepted");
+      expect(notifications[0].user_id).toBe(newSwap.sender);
+      expect(notifications[0].seen).toBe(false);
+
+  
+    });
+  });
 })
-})
+
+
