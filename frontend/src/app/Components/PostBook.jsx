@@ -38,7 +38,7 @@ const PostBook = () => {
     publishedYear: "",
     imageUrl: "",
     postedDate: "",
-    user: user.username || ""
+    user: user.username || "",
   });
 
   const handleChange = (event) => {
@@ -180,4 +180,4 @@ const PostBook = () => {
 
 export default PostBook;
 
-//Post
+//Post book
