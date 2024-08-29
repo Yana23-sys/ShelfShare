@@ -89,6 +89,7 @@ const MyProfile = () => {
         <Grid item xs={12} md={8}>  
           <Paper className={styles.profileSectionCard}>  
             <Typography variant="h6" className={styles.sectionTitle}>My Books</Typography>  
+            <div style={{ maxHeight: 300, overflowY: 'auto' }}>
             <List>
                 {(user.books || []).map((book) => (
                     <ListItem key={book._id}>
@@ -99,15 +100,20 @@ const MyProfile = () => {
                     </ListItem>
                 ))}
             </List>
+            </div>
           </Paper>  
 
           <Paper className={styles.profileSectionCard}>  
             <Typography variant="h6" className={styles.sectionTitle}>Current Swaps</Typography>  
+            <div style={{ maxHeight: 300, overflowY: 'auto' }}>
             <SwapList swaps={swaps.pending} currentUser={user} onSwapUpdate={handleSwapUpdate}/>
+            </div>
           </Paper>  
           <Paper className={styles.profileSectionCard}>  
             <Typography variant="h6" className={styles.sectionTitle}>Previous Swaps</Typography>  
+            <div style={{ maxHeight: 300, overflowY: 'auto' }}>
             <SwapList swaps={swaps.completed} currentUser={user} />
+            </div>
           </Paper> 
            
         </Grid>  
