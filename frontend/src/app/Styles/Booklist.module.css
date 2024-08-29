@@ -1,10 +1,11 @@
-/* Shared styles for all containers */
-.container {
+/* Container for sorting/filtering */
+.sortFilterContainer {
   display: flex;
   flex-direction: column;
-  align-items: center; /* Center items horizontally */
-  padding: 20px;
-  background-color: #ffffff; /* Changed to consistent white background */
+  align-items: flex-start; /* Align items to the start */
+  margin-bottom: 20px; /* Add spacing below the filter */
+  padding: 10px;
+  background-color: #f9f9f9; /* Light background for contrast */
   border-radius: 8px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
@@ -24,9 +25,15 @@
   border-color: #0070f3; /* Highlight color for focus */
 }
 
+/* Label for dropdowns */
+.sortLabel {
+  margin-bottom: 10px; /* Space between label and dropdown */
+  font-weight: bold;
+}
+
 /* Responsive adjustments */
 @media (max-width: 600px) {
-  .container {
+  .sortFilterContainer {
     padding: 15px;
   }
 }

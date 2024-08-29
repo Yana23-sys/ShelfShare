@@ -1,7 +1,12 @@
-// components/SortFilter.jsx
 "use client";
 import { useState, useEffect } from "react";
-import { FormControl, InputLabel, Select, MenuItem } from "@mui/material";
+import {
+  FormControl,
+  InputLabel,
+  Select,
+  MenuItem,
+  Typography,
+} from "@mui/material";
 import { fetchSortedBooks } from "../api/books";
 import { getAllLocations } from "../api/users";
 import styles from "../Styles/Booklist.module.css";
@@ -26,10 +31,7 @@ const SortFilter = ({ onBooksChange }) => {
   }, []);
 
   useEffect(() => {
-    const params = {
-      sort_by: sortBy,
-    };
-
+    const params = { sort_by: sortBy };
     if (sortBy === "location" && selectedLocation) {
       params.location = selectedLocation;
     }
@@ -61,7 +63,10 @@ const SortFilter = ({ onBooksChange }) => {
   };
 
   return (
-    <div className={styles.container}>
+    <div className={styles.sortFilterContainer}>
+      <Typography variant="h6" className={styles.sortLabel}>
+        Sort By
+      </Typography>
       <FormControl className={styles.formControl}>
         <InputLabel>Sort By</InputLabel>
         <Select
