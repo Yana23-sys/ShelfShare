@@ -28,20 +28,19 @@ exports.getAllBooks = async (req, res, next) => {
       filterCriteria.location = location;
     }
 
-    // Parse page and limit to integers
-    const pageNum = parseInt(page, 10);
-    const limitNum = parseInt(limit, 10);
+    // Convert page and limit to integers
+    const currentPage = parseInt(page, 10);
+    const limitInt = parseInt(limit, 10);
 
-    // Fetch books using the model function with pagination
-    const books = await findAllBooks(sortCriteria, filterCriteria, pageNum, limitNum);
+    const { books, totalBooks, totalPages } = await findAllBooks(sortCriteria, filterCriteria, currentPage, limitInt);
 
     // Send response with pagination info
     res.status(200).send({ 
       books, 
-      currentPage: pageNum, 
-      totalPages: Math.ceil(books.length / limitNum),
-      pageSize: limitNum,
-      totalBooks: books.length
+      totalBooks,
+      totalPages,
+      currentPage,
+      limit: limitInt,
     });
   } catch (error) {
     console.error("Error fetching books:", error);

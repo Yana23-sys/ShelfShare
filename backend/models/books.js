@@ -15,7 +15,7 @@ const bookSchema = new mongoose.Schema({
 
 const Book = mongoose.model("Book", bookSchema);
 
-const findAllBooks = async (sortCriteria = {}, filterCriteria = {}, page = 1, limit = 10) => {
+const findAllBooks = async (sortCriteria = {}, filterCriteria = {}, page = 1, pageSize = 10) => {
   try {
     const { sortBy } = sortCriteria;
 
@@ -39,10 +39,14 @@ const findAllBooks = async (sortCriteria = {}, filterCriteria = {}, page = 1, li
       filter['user.location'] = filterCriteria.location
     }
 
-    // Calculate the number of documents to skip
-    const skip = (page - 1) * limit;
+    // Count total books before applying pagination
+    const totalBooks = await Book.countDocuments(filter);
 
-    return await Book.aggregate([
+    // Calculate pagination data
+    const totalPages = Math.ceil(totalBooks / pageSize);
+    const skip = (page - 1) * pageSize;
+
+    const books = await Book.aggregate([
       {
         $lookup: {
           from: "users",
@@ -64,8 +68,10 @@ const findAllBooks = async (sortCriteria = {}, filterCriteria = {}, page = 1, li
       { $match: filter },
       { $sort: sort },
       { $skip: skip }, // Skip documents based on the page number
-      { $limit: limit } // Limit the number of documents returned
+      { $limit: pageSize } // Limit the number of documents returned
     ]);
+
+    return { books, totalBooks, totalPages };
   } 
   catch (err) {
     console.error("Error fetching books:", err);
