@@ -1,32 +1,101 @@
-/* Shared styles for all containers */
-.container {
-  display: flex;
-  flex-direction: column;
-  align-items: center; /* Center items horizontally */
+/* Container for the sort and filter controls */
+.sortFilterContainer {
+  max-width: 1400px;
+  margin: 0 auto;
   padding: 20px;
-  background-color: #ffffff; /* Changed to consistent white background */
-  border-radius: 8px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Sort controls container */
+.sortControls {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  margin-bottom: 20px;
+  gap: 10px;
+}
+
+/* Styling for the "Sort By" text */
+.sortBy {
+  display: flex;
+  align-items: center;
+  margin-right: 20px; /* Space between "Sort By" and dropdown */
 }
 
 /* Form control for sorting/filtering */
 .formControl {
-  width: 200px; /* Set a specific width for form controls */
-  margin-bottom: 20px;
+  width: 200px;
 }
 
 /* Ensure select dropdowns have consistent sizes */
 .select {
-  width: 100%; /* Make the select fill its parent container */
+  width: 100%;
+  padding: 8px 12px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 14px;
+  color: #333;
+  background-color: #f9f9f9;
+  outline: none;
 }
 
-.select:focus {
-  border-color: #0070f3; /* Highlight color for focus */
+/* Styling for filter dropdowns */
+.filterControl {
+  display: flex;
+  align-items: center;
+  margin-right: 20px;
 }
 
 /* Responsive adjustments */
-@media (max-width: 600px) {
-  .container {
-    padding: 15px;
+@media (max-width: 1200px) {
+  .sortControls {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
   }
+
+  .formControl {
+    width: 100%;
+    margin-bottom: 10px;
+  }
+
+  .filterControl {
+    margin-right: 0;
+  }
+}
+
+@media (max-width: 768px) {
+  .sortControls {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+  }
+
+  .formControl,
+  .filterControl {
+    width: 100%;
+    margin-bottom: 10px;
+  }
+}
+
+/* Booklist container */
+.container {
+  padding: 20px;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+/* Grid container for book cards */
+.gridContainer {
+  margin-top: 20px;
+}
+
+/* Message for no books available */
+.noBooksMessage {
+  text-align: center;
+  margin-top: 20px;
+}
+
+/* Book item styling */
+.bookItem {
+  margin-bottom: 20px;
 }

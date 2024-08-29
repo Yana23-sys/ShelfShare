@@ -40,11 +40,13 @@ export const getAllBooksByUserId = (userId) => {
     });
 };
 
-export const fetchSortedBooks = ({ sort_by, location }) => {
+export const fetchSortedBooks = ({ sort_by, location, author, genre }) => {
   const params = {};
 
   if (sort_by) params.sort_by = sort_by;
   if (location) params.location = location;
+  if (author) params.author = author;
+  if (genre) params.genre = genre;
 
   return api
     .get("/books", { params })

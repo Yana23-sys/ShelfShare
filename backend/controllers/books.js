@@ -10,22 +10,14 @@ const DEFAULT_COVER_IMAGE_URL =
 
 exports.getAllBooks = async (req, res, next) => {
   try {
-    // Extract sorting criteria from query parameters
-    const { sort_by, user_id, location } = req.query;
-    let sortCriteria = {};
-    let filterCriteria = { user_id, location }; // Implement filtering if needed
+    const { sort_by, user_id, location, author, genre } = req.query;
 
-    // Validate and set sort criteria
-    if (sort_by === "genre" || sort_by === "author" || sort_by === "location") {
-      sortCriteria = { sortBy: sort_by };
-    } else if (sort_by) {
-      // Respond with error if sort_by is invalid
-      return res.status(400).send({ message: "Invalid sort_by field" });
-    }
-
-    if (sort_by === "location" && location) {
-      filterCriteria.location = location;
-    }
+    // Prepare sorting and filtering criteria
+    const sortCriteria =
+      sort_by === "genre" || sort_by === "author" || sort_by === "location"
+        ? { sortBy: sort_by }
+        : {};
+    const filterCriteria = { user_id, location, author, genre };
 
     // Fetch books using the model function
     const books = await findAllBooks(sortCriteria, filterCriteria);
@@ -35,7 +27,6 @@ exports.getAllBooks = async (req, res, next) => {
     next(error);
   }
 };
-
 exports.getBookById = (req, res, next) => {
   const { bookId } = req.params;
 

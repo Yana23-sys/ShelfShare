@@ -83,8 +83,6 @@ describe("/api/books", () => {
     });
 
     test("200: returns all books for given location", () => {
-      const userId = testData.users[0]._id;
-
       return request(app)
         .get(`/api/books?location=London, UK`)
         .expect(200)
@@ -94,6 +92,28 @@ describe("/api/books", () => {
           body.books.forEach((book) => {
             expect(book.user.location).toBe("London, UK");
           });
+        });
+    });
+    test("200: returns all books for given author", () => {
+      return request(app)
+        .get(`/api/books?author=Harper Lee`)
+        .expect(200)
+        .then(({ body }) => {
+          expect(body.books).toHaveLength(1);
+
+          body.books.forEach((book) => {
+            expect(book.author).toBe("Harper Lee");
+          });
+        });
+    });
+    test("200: returns all books for given genre", () => {
+      const genreName = testData.genres[0].name;
+
+      return request(app)
+        .get(`/api/books?genre=${genreName}`)
+        .expect(200)
+        .then(({ body }) => {
+          expect(body.books).toHaveLength(4);
         });
     });
   });
@@ -336,22 +356,22 @@ describe("GET /api/users", () => {
 
 describe("/api/swaps", () => {
   describe("POST", () => {
-  test("201: creates a new swap", () => {
-    const newSwap = {
-      sender: testData.users[0]._id.toString(),
-      receiver: testData.users[1]._id.toString(),
-      sender_book: testData.books[0]._id.toString(),
-      receiver_book: testData.books[1]._id.toString()
-    };
-    return request(app)
-      .post("/api/swaps")
-      .send(newSwap)
-      .expect(201)
-      .then(({ body }) => {
-        expect(body.swap).toMatchObject(newSwap);
-        expect(body.swap.status).toBe("pending");
-      });
-  });
+    test("201: creates a new swap", () => {
+      const newSwap = {
+        sender: testData.users[0]._id.toString(),
+        receiver: testData.users[1]._id.toString(),
+        sender_book: testData.books[0]._id.toString(),
+        receiver_book: testData.books[1]._id.toString(),
+      };
+      return request(app)
+        .post("/api/swaps")
+        .send(newSwap)
+        .expect(201)
+        .then(({ body }) => {
+          expect(body.swap).toMatchObject(newSwap);
+          expect(body.swap.status).toBe("pending");
+        });
+    });
 
     test("400: responds with error code 400 when some information is not provided", () => {
       const newSwap = {
@@ -400,22 +420,22 @@ describe("/api/swaps", () => {
         });
     });
 
-  test("404: responds with error code 404 when a non-existent book Id is provided", () => {
-    const newSwap = {
-      sender: testData.users[0]._id.toString(),
-      receiver: testData.users[1]._id.toString(),
-      sender_book: "66cda4ce123ea63cf20259ad",
-      receiver_book: testData.books[1]._id.toString()
-    };
-    return request(app)
-    .post("/api/swaps")
-    .send(newSwap)
-    .expect(404)
-    .then(({body}) => {
-      expect(body.message).toBe("Non existent bookId provided")
-    })
-  })
-})
+    test("404: responds with error code 404 when a non-existent book Id is provided", () => {
+      const newSwap = {
+        sender: testData.users[0]._id.toString(),
+        receiver: testData.users[1]._id.toString(),
+        sender_book: "66cda4ce123ea63cf20259ad",
+        receiver_book: testData.books[1]._id.toString(),
+      };
+      return request(app)
+        .post("/api/swaps")
+        .send(newSwap)
+        .expect(404)
+        .then(({ body }) => {
+          expect(body.message).toBe("Non existent bookId provided");
+        });
+    });
+  });
 
   describe("POST and PATCH", () => {
     test("201: creates a new swap and then 204: updates the swap status and creates a notification", async () => {
@@ -448,11 +468,11 @@ describe("/api/swaps", () => {
         .expect(200);
 
       // Step 4: Assert that a notification was created
-      const notifications  = notificationsResponse.body;
-      console.log(newSwap, "notifications TEST")
-      console.log(notificationsResponse.body[0]._id, "notifications TEST")
+      const notifications = notificationsResponse.body;
+      console.log(newSwap, "notifications TEST");
+      console.log(notificationsResponse.body[0]._id, "notifications TEST");
 
-      // Patch 
+      // Patch
       await request(app)
         .patch(`/api/notifications/${notificationsResponse.body[0]._id}`)
         .send({ seen: true })
@@ -462,16 +482,38 @@ describe("/api/swaps", () => {
         .get(`/api/notifications?userId=${newSwap.sender}&seen=true`)
         .expect(200);
 
-        console.log(notificationsResponse2.body, "notifications TEST 2")
+      console.log(notificationsResponse2.body, "notifications TEST 2");
 
       expect(notifications).toHaveLength(1);
       expect(notifications[0].message).toContain("accepted");
       expect(notifications[0].user_id).toBe(newSwap.sender);
       expect(notifications[0].seen).toBe(false);
-
-  
     });
   });
-})
+});
 
+describe("/api/genres", () => {
+  describe("GET", () => {
+    test("200: returns all genres", () => {
+      return request(app)
+        .get("/api/genres")
+        .expect(200)
+        .then(({ body }) => {
+          console.log(body.genres);
+          expect(body.genres).toBeInstanceOf(Array);
 
+          // Add more specific checks based on your data
+          if (body.genres.length > 0) {
+            body.genres.forEach((genre) => {
+              expect(genre).toHaveProperty("name");
+              // Add more properties to check if needed
+            });
+          }
+        });
+    });
+
+    test("404: returns 404 for non-existent endpoint", () => {
+      return request(app).get("/api/non-existent-endpoint").expect(404);
+    });
+  });
+});

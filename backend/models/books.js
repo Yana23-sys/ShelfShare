@@ -14,32 +14,39 @@ const bookSchema = new mongoose.Schema({
 });
 
 const Book = mongoose.model("Book", bookSchema);
-
 const findAllBooks = async (sortCriteria = {}, filterCriteria = {}) => {
   try {
     const { sortBy } = sortCriteria;
 
-    let sort = {};
+    // Define sort options based on the sortBy criteria
+    const sort = {};
     if (sortBy === "genre") {
-      sort = { "genre.name": 1 }; // Sort by genre name (ascending)
+      sort["genre.name"] = 1; // Sort by genre name (ascending)
     } else if (sortBy === "author") {
-      sort = { author: 1 }; // Sort by author name (ascending)
+      sort["author"] = 1; // Sort by author name (ascending)
     } else if (sortBy === "location") {
-      sort = { "user.location": 1 }; // Sort by user location (ascending)
+      sort["user.location"] = 1; // Sort by user location (ascending)
     } else {
-      sort = { title: 1 }; // Default sort by title (ascending)
+      sort["title"] = 1; // Default sort by title (ascending)
     }
 
-    let filter = {};
+    // Define filter options based on the filter criteria
+    const filter = {};
     if (filterCriteria.user_id) {
-      filter['user._id'] = ObjectId.createFromHexString(filterCriteria.user_id)
+      filter["user._id"] = ObjectId(filterCriteria.user_id);
     }
-
     if (filterCriteria.location) {
-      filter['user.location'] = filterCriteria.location
+      filter["user.location"] = filterCriteria.location;
+    }
+    if (filterCriteria.author) {
+      filter["author"] = filterCriteria.author;
+    }
+    if (filterCriteria.genre) {
+      filter["genre.name"] = filterCriteria.genre;
     }
 
-    return await Book.aggregate([
+    // Use aggregation to join collections and apply filtering/sorting
+    const books = await Book.aggregate([
       {
         $lookup: {
           from: "users",
