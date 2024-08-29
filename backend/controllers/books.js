@@ -10,10 +10,11 @@ const DEFAULT_COVER_IMAGE_URL =
 
 exports.getAllBooks = async (req, res, next) => {
   try {
-    // Extract sorting criteria from query parameters
-    const { sort_by, user_id, location } = req.query;
+    // Extract sorting and pagination criteria from query parameters
+    const { sort_by, user_id, location, page = 1, limit = 10 } = req.query;
+
     let sortCriteria = {};
-    let filterCriteria = { user_id, location }; // Implement filtering if needed
+    let filterCriteria = { user_id, location }; 
 
     // Validate and set sort criteria
     if (sort_by === "genre" || sort_by === "author" || sort_by === "location") {
@@ -27,9 +28,20 @@ exports.getAllBooks = async (req, res, next) => {
       filterCriteria.location = location;
     }
 
-    // Fetch books using the model function
-    const books = await findAllBooks(sortCriteria, filterCriteria);
-    res.status(200).send({ books });
+    // Convert page and limit to integers
+    const currentPage = parseInt(page, 10);
+    const limitInt = parseInt(limit, 10);
+
+    const { books, totalBooks, totalPages } = await findAllBooks(sortCriteria, filterCriteria, currentPage, limitInt);
+
+    // Send response with pagination info
+    res.status(200).send({ 
+      books, 
+      totalBooks,
+      totalPages,
+      currentPage,
+      limit: limitInt,
+    });
   } catch (error) {
     console.error("Error fetching books:", error);
     next(error);

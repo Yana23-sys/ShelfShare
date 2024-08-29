@@ -8,14 +8,14 @@ const bookSchema = new mongoose.Schema({
   genre: { type: Schema.Types.ObjectId, ref: "Genre", required: true },
   description: { type: String },
   publication_year: { type: String },
-  posted_date: { type: Date, default: Date.now }, // change type to Date
-  user: { type: Schema.Types.ObjectId, ref: "User", required: true }, // Assuming this links to a user who posted the book
+  posted_date: { type: Date, default: Date.now }, 
+  user: { type: Schema.Types.ObjectId, ref: "User", required: true }, 
   cover_image_url: { type: String },
 });
 
 const Book = mongoose.model("Book", bookSchema);
 
-const findAllBooks = async (sortCriteria = {}, filterCriteria = {}) => {
+const findAllBooks = async (sortCriteria = {}, filterCriteria = {}, page = 1, pageSize = 10) => {
   try {
     const { sortBy } = sortCriteria;
 
@@ -39,7 +39,14 @@ const findAllBooks = async (sortCriteria = {}, filterCriteria = {}) => {
       filter['user.location'] = filterCriteria.location
     }
 
-    return await Book.aggregate([
+    // Count total books before applying pagination
+    const totalBooks = await Book.countDocuments(filter);
+
+    // Calculate pagination data
+    const totalPages = Math.ceil(totalBooks / pageSize);
+    const skip = (page - 1) * pageSize;
+
+    const books = await Book.aggregate([
       {
         $lookup: {
           from: "users",
@@ -60,10 +67,13 @@ const findAllBooks = async (sortCriteria = {}, filterCriteria = {}) => {
       { $unwind: "$genre" },
       { $match: filter },
       { $sort: sort },
+      { $skip: skip }, // Skip documents based on the page number
+      { $limit: pageSize } // Limit the number of documents returned
     ]);
 
-    return books;
-  } catch (err) {
+    return { books, totalBooks, totalPages };
+  } 
+  catch (err) {
     console.error("Error fetching books:", err);
     throw err;
   }
