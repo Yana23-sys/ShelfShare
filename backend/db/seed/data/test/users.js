@@ -1,5 +1,3 @@
-users.js
-
 module.exports = [
     {
       username: "danleonard23",
