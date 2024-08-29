@@ -12,7 +12,7 @@ import { getAllLocations } from "../api/users";
 import styles from "../Styles/Booklist.module.css";
 
 const SortFilter = ({ onBooksChange }) => {
-  const [sortBy, setSortBy] = useState("author"); // Default sort by author
+  const [sortBy, setSortBy] = useState([]);
   const [locations, setLocations] = useState([]);
   const [selectedLocation, setSelectedLocation] = useState("");
 
