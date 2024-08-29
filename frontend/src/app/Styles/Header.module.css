@@ -15,7 +15,10 @@
 .avatarImg {
   position: absolute;
   height: 10%;
-  top: 15px;
+  width: 10%;
+  margin-top: 10%;
+  left: 90%;
+  bottom: 89%;
 }
 
 .navbar {

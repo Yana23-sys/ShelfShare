@@ -53,7 +53,7 @@
 }
 
 .userLoginButton {
-    background-color: #351e0ebe;
+    background-color: #1976d2;
     color: #ffffff;
     border: solid;
     border-color: #dd7627;
@@ -63,7 +63,7 @@
 }
 
 .userLoginButton:hover {
-    background-color: #0e2a35;
-    color: #EBE3CA;
+    background-color: #1361ae;
+    color: #ffffff;
     cursor: pointer;
 }
