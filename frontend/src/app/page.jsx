@@ -1,6 +1,7 @@
 import styles from "./Styles/page.module.css";
 import { Card, CardHeader, CardMedia } from "@mui/material";
 import Map from "./Components/Map";
+import Link from "next/link";
 
 const Home = () => {
   return (
@@ -41,6 +42,7 @@ const Home = () => {
         </p>
         <section className={styles.bookCard}>
 
+          <Link href='http://localhost:3000/books/66ced2c3cd7a0381694b5460'>
           <Card>
             <CardMedia
               component="img"
@@ -53,6 +55,8 @@ const Home = () => {
             <CardHeader className={styles.tag} title={"Wind in the Willows"} />
             <h2 className={styles.tag}>Author: {"Kenneth Grahame"}</h2>
           </Card>
+          </Link>
+          <Link href='http://localhost:3000/books/66c74612d2576e500cf4756e'>
           <Card>
             <CardMedia
               component="img"
@@ -68,19 +72,21 @@ const Home = () => {
             />
             <h2 className={styles.tag}>Author: {"J.K.Rowling"}</h2>
           </Card>
+          </Link>
+          <Link href='http://localhost:3000/books/66cee48ecd7a0381694b55a6'>
           <Card>
             <CardMedia
               component="img"
               image={
                 "https://i.ebayimg.com/images/g/PhUAAOSweNNgiphk/s-l600.jpg"
               }
-              alt={"Book cover for Harry Potter and the Philosopher's Stone"}
+              alt={"Book cover for The Da Vinci Code"}
               className={styles.cardImage}
             />
             <CardHeader className={styles.tag} title={"The Da Vinci Code"} />
             <h2 className={styles.tag}>Author: {"Dan Brown"}</h2>
           </Card>
-
+          </Link>
         </section>
       </section>
     </div>
