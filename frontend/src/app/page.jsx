@@ -29,7 +29,7 @@ const Home = () => {
       <section className={styles.mapContainer}>
             <strong className={styles.orderList}>Check the map for swaps in your area:</strong>
             <p className={styles.container}>
-            Select a book location on the map to get started 🖗
+            Select a book location on the map to get started
             </p>
             <Map />
       </section>
