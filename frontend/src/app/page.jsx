@@ -19,19 +19,20 @@ const Home = () => {
         />
         
         <ul className={`${styles.orderList} ${styles.flexItem}`}>
-          <strong>How ShelfShare Works:</strong>
-          <p/>
-          <li>Sign up and create a profile.</li>
-          <li>List books you want to swap.</li>
-          <li>Browse available books and connect with other users.</li>
-        </ul>
+      <section className={styles.container}>
+        <p>
+        <strong>How ShelfShare Works:</strong>
+        </p>
+          <li>1. Sign up and create a profile.</li>
+          <li>2. List books you want to swap.</li>
+          <li>3. Browse available books.</li>
+          <li>4. Connect with other users.</li>
+          <p>
+          <strong>Select a book on the map 🖗</strong>
+          </p>
+          <Map />
       </section>
-      <section className={styles.mapContainer}>
-            <strong className={styles.orderList}>Check the map for swaps in your area:</strong>
-            <p className={styles.container}>
-            Select a book location on the map to get started
-            </p>
-            <Map />
+        </ul>
       </section>
       <section className={styles.container}>
         <h2 className={styles.subheading}>Available Books</h2>

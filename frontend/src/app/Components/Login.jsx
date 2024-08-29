@@ -33,7 +33,7 @@ function Login({ users }) {
         }}
       >
         <Typography component="h2" variant="h5">
-          Enter your crendentials to login
+          Enter your credentials to login
         </Typography>
         <Box component="form" onSubmit={handleSubmit} sx={{ mt: 1 }}>
           <TextField
