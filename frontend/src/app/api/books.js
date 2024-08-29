@@ -8,7 +8,7 @@ export const getAllBooks = (params) => {
   return api
     .get(`/books`, { params })
     .then((response) => {
-      return response.data.books;
+      return response.data; // return the entire response including pagination info
     })
     .catch((error) => {
       console.error("Error getting books from api:", error);

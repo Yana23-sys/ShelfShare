@@ -1,16 +1,14 @@
 "use client";
-import { useState } from "react";
 import BookCard from "./Bookcard";
-import { Grid } from "@mui/material";
+import { Grid, Pagination, Stack } from "@mui/material";
 import SortFilter from "./SortFilter";
 import styles from "../Styles/Booklist.module.css";
 
-const Booklist = ({ initialBooks = [] }) => {
-  const [books, setBooks] = useState(initialBooks);
+const Booklist = ({ books, page, totalPages, onPageChange, onBooksChange }) => {
 
   return (
     <div className={styles.container}>
-      <SortFilter onBooksChange={setBooks} />
+      <SortFilter onBooksChange={onBooksChange} />
 
       <Grid container spacing={4} className={styles.gridContainer}>
         {books.length > 0 ? (
@@ -23,6 +21,20 @@ const Booklist = ({ initialBooks = [] }) => {
           <p className={styles.noBooksMessage}>No books available</p>
         )}
       </Grid>
+
+      <Stack spacing={2} alignItems="center">
+        <Pagination
+          count={totalPages}
+          page={page}
+          onChange={(event, value) => onPageChange(value)}
+          showFirstButton
+          showLastButton
+          siblingCount={1} // Number of siblings to show before/after the current page
+          boundaryCount={1} // Number of boundary pages (first and last) to show
+          color="primary"
+          size="large"
+        />
+      </Stack>
     </div>
   );
 };
