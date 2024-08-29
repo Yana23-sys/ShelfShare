@@ -3,7 +3,8 @@ const { getAllBooks, createBook, getBookById } = require('./controllers/books')
 const { createBookSwap, getAllSwapsByUserId, updateSwap } = require('./controllers/swaps')
 const { getAllUsers } = require('./controllers/users')
 const { getEndpoints } = require('./controllers')
-const { serverErrorHandler } = require('./error-handlers')
+const { getNotifications, markNotificationAsSeen } = require('./controllers/notifications')
+const { customErrorHandler, serverErrorHandler } = require('./error-handlers')
 const cors = require('cors')
 
 const app = express();
@@ -21,11 +22,15 @@ app.get("/api/books/:bookId", getBookById)
 app.post('/api/swaps', createBookSwap)
 app.get('/api/swaps', getAllSwapsByUserId)
 app.patch('/api/swaps/:swapId', updateSwap)
+
+app.get('/api/notifications', getNotifications)
+app.patch('/api/notifications/:id', markNotificationAsSeen)
  
 app.all('*', (req, res, next) => {
     res.status(404).send({message: 'path not found'})
 })
 
+app.use(customErrorHandler)
 app.use(serverErrorHandler)
 
 module.exports = app

@@ -11,7 +11,7 @@ const swapSchema = new mongoose.Schema({
   date_updated: { type: Date, default: Date.now },
   status: {
     type: String,
-    enum: ["pending", "accepted", "rejected", "completed"],
+    enum: ["pending", "accepted", "rejected", "completed", "canceled"],
     default: "pending",
   },
 });
@@ -58,10 +58,12 @@ const findAllSwapsByUserId = async (userId) => {
 };
 
 const updateSwapStatus = async (swapId, status) => {
-  // updateOne returns query result obj with details about the update operation
-  const result = await Swap.updateOne({ _id: ObjectId.createFromHexString(swapId) }, { status });
-  // if document does not exist modify count will be 0
-  return result.matchedCount > 0;
+  return await Swap
+  .findOneAndUpdate({ _id: ObjectId.createFromHexString(swapId) }, { status })
+  .populate("sender")
+  .populate("receiver")
+  .populate("sender_book")
+  .populate("receiver_book");
 };
 
 module.exports = { insertSwap, findAllSwapsByUserId, updateSwapStatus };

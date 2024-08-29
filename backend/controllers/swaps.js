@@ -6,8 +6,9 @@ const {
 const { findUserById } = require("../models/users");
 const { findBookById } = require("../models/books");
 const mongoose = require("mongoose");
+const { createNotification } = require("../models/notifications");
 
-const acceptedStatuses = ["pending", "accepted", "rejected", "completed"]
+const acceptedStatuses = ["pending", "accepted", "rejected", "completed", "canceled"]
 
 exports.getAllSwapsByUserId = async (req, res, next) => {
   const { user_id } = req.query;
@@ -55,6 +56,11 @@ exports.createBookSwap = async (req, res, next) => {
 
   try {
     const insertedSwap = await insertSwap(req.body);
+
+    // TODO: create notification to let receiver know about swap request
+    const message = `New swap request: ${senderBookEntity.title} for ${receiverBookEntity.title}`;
+    await createNotification({ user_id: receiver, message });
+
     res.status(201).send({ swap: insertedSwap });
   } catch (error) {
     console.error("Error inserting swap:", error);
@@ -76,10 +82,32 @@ exports.updateSwap = async (req, res, next) => {
       .send({ message: "Please provide all required fields" });
   }
   try {
-    const updated = await updateSwapStatus(swapId, status);
-    if (!updated) {
+    const updatedSwap = await updateSwapStatus(swapId, status);
+    if (!updatedSwap) {
       return res.status(404).send({ message: "Swap not found" });
     }
+
+    // Create notifications based on the new status
+    if (status === "accepted") {
+      await createNotification({
+        user_id: updatedSwap.sender._id,
+        message: `Your swap request with ${updatedSwap.receiver.username} has been accepted.`,
+        date_created: new Date()
+      });
+    } else if (status === "rejected") {
+      await createNotification({
+        user_id: updatedSwap.sender._id,
+        message: `Your swap request with ${updatedSwap.receiver.username} has been rejected.`,
+        date_created: new Date()
+      });
+    } else if (status === "canceled") {
+      await createNotification({
+        user_id: updatedSwap.receiver._id,
+        message: `The swap request with ${updatedSwap.sender.username} has been canceled.`,
+        date_created: new Date()
+      });
+    }
+
     res.status(204).send();
   } catch (error) {
     console.error("Error updating swap:", error);

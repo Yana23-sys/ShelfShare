@@ -24,3 +24,12 @@ export const createSwap = ({ sender, receiver, senderBook, receiverBook }) => {
         throw error
     })
 }
+
+export const updateSwap = ({ swapId, status }) => {
+  return api.patch(`/swaps/${swapId}`, {status})
+      .then(() => console.log('Updated swap successfully from api!'))
+      .catch(error => {
+        console.error('Error updating swap:', error)
+        throw error
+    })
+}
