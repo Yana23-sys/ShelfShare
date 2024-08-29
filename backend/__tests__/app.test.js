@@ -1,7 +1,10 @@
 const data = require("../db/seed/data");
 const { seedMongoDB } = require("../db/seed/seed");
 const config = require("../config");
-const {connectToMongo, disconnectFromMongo} = require("../db/mongodb-connection");
+const {
+  connectToMongo,
+  disconnectFromMongo,
+} = require("../db/mongodb-connection");
 const request = require("supertest");
 const app = require("../app");
 const endpoints = require("../controllers/endpoints");
@@ -329,7 +332,7 @@ describe("GET /api/users", () => {
         expect(body.users.length).toEqual(5);
       });
   });
-})
+});
 
 describe("/api/swaps", () => {
   describe("POST", () => {
@@ -350,52 +353,52 @@ describe("/api/swaps", () => {
       });
   });
 
-  test("400: responds with error code 400 when some information is not provided", () => {
-    const newSwap = {
-      sender: testData.users[0]._id.toString(),
-      receiver: testData.users[1]._id.toString(),
-      receiver_book: testData.books[1]._id.toString()
-    };
-    return request(app)
-    .post("/api/swaps")
-    .send(newSwap)
-    .expect(400)
-    .then(({body}) => {
-      expect(body.message).toBe("Please provide all required fields")
-    })
-  })
+    test("400: responds with error code 400 when some information is not provided", () => {
+      const newSwap = {
+        sender: testData.users[0]._id.toString(),
+        receiver: testData.users[1]._id.toString(),
+        receiver_book: testData.books[1]._id.toString(),
+      };
+      return request(app)
+        .post("/api/swaps")
+        .send(newSwap)
+        .expect(400)
+        .then(({ body }) => {
+          expect(body.message).toBe("Please provide all required fields");
+        });
+    });
 
-  test("400: responds with error code 400 when an invalid ID is given", () => {
-    const newSwap = {
-      sender: "113545",
-      receiver: testData.users[1]._id.toString(),
-      sender_book: testData.books[0]._id.toString(),
-      receiver_book: testData.books[1]._id.toString()
-    };
-    return request(app)
-    .post("/api/swaps")
-    .send(newSwap)
-    .expect(400)
-    .then(({body}) => {
-      expect(body.message).toBe("Invalid ID format")
-    })
-  })
+    test("400: responds with error code 400 when an invalid ID is given", () => {
+      const newSwap = {
+        sender: "113545",
+        receiver: testData.users[1]._id.toString(),
+        sender_book: testData.books[0]._id.toString(),
+        receiver_book: testData.books[1]._id.toString(),
+      };
+      return request(app)
+        .post("/api/swaps")
+        .send(newSwap)
+        .expect(400)
+        .then(({ body }) => {
+          expect(body.message).toBe("Invalid ID format");
+        });
+    });
 
-  test("404: responds with error code 404 when a non-existent user Id is provided", () => {
-    const newSwap = {
-      sender: "66cda4cd325ea63cf40758b2",
-      receiver: testData.users[1]._id.toString(),
-      sender_book: testData.books[0]._id.toString(),
-      receiver_book: testData.books[1]._id.toString()
-    };
-    return request(app)
-    .post("/api/swaps")
-    .send(newSwap)
-    .expect(404)
-    .then(({body}) => {
-      expect(body.message).toBe("Non existent userId provided")
-    })
-  })
+    test("404: responds with error code 404 when a non-existent user Id is provided", () => {
+      const newSwap = {
+        sender: "66cda4cd325ea63cf40758b2",
+        receiver: testData.users[1]._id.toString(),
+        sender_book: testData.books[0]._id.toString(),
+        receiver_book: testData.books[1]._id.toString(),
+      };
+      return request(app)
+        .post("/api/swaps")
+        .send(newSwap)
+        .expect(404)
+        .then(({ body }) => {
+          expect(body.message).toBe("Non existent userId provided");
+        });
+    });
 
   test("404: responds with error code 404 when a non-existent book Id is provided", () => {
     const newSwap = {

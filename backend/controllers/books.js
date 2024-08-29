@@ -23,6 +23,10 @@ exports.getAllBooks = async (req, res, next) => {
       return res.status(400).send({ message: "Invalid sort_by field" });
     }
 
+    if (sort_by === "location" && location) {
+      filterCriteria.location = location;
+    }
+
     // Fetch books using the model function
     const books = await findAllBooks(sortCriteria, filterCriteria);
     res.status(200).send({ books });
@@ -85,7 +89,7 @@ exports.createBook = async (req, res, next) => {
     author,
     description,
     publication_year,
-    posted_date: new Date(posted_date), 
+    posted_date: new Date(posted_date),
     cover_image_url: cover_image_url || DEFAULT_COVER_IMAGE_URL,
     user: user._id,
     genre: genre._id,

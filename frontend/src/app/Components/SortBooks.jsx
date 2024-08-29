@@ -1,36 +1,30 @@
+// components/SortBooks.jsx
+"use client";
 import { useState, useEffect } from "react";
-import { fetchBooks } from "../../utils/api";
+import SortFilter from "./SortFilter";
+import styles from "../Styles/Booklist.module.css";
 
 const SortBooks = () => {
   const [books, setBooks] = useState([]);
-  const [sortBy, setSortBy] = useState("author"); // Default sort by author
-
-  useEffect(() => {
-    const fetchSortedBooks = async () => {
-      const sortedBooks = await fetchBooks(sortBy);
-      setBooks(sortedBooks);
-    };
-
-    fetchSortedBooks();
-  }, [sortBy]);
 
   return (
-    <div>
-      <h1>Sort Books by {sortBy}</h1>
-      <select onChange={(e) => setSortBy(e.target.value)} value={sortBy}>
-        <option value="author">Author</option>
-        <option value="genre">Genre</option>
-        <option value="location">Location</option>
-      </select>
+    <div className={styles.container}>
+      <h1>Sort Books</h1>
+      <SortFilter onBooksChange={setBooks} />
+
       <ul>
-        {books.map((book, index) => (
-          <li key={index}>
-            <h2>{book.title}</h2>
-            <p>Author: {book.author}</p>
-            <p>Genre: {book.genre}</p>
-            <p>Location: {book.user.location}</p>
-          </li>
-        ))}
+        {books.length > 0 ? (
+          books.map((book, index) => (
+            <li key={index} className={styles.bookItem}>
+              <h2>{book.title}</h2>
+              <p>Author: {book.author}</p>
+              <p>Genre: {book.genre.name}</p>
+              <p>Location: {book.user.location}</p>
+            </li>
+          ))
+        ) : (
+          <p>No books available</p>
+        )}
       </ul>
     </div>
   );

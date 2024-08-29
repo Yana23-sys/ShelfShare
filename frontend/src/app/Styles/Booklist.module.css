@@ -1,0 +1,32 @@
+/* Shared styles for all containers */
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* Center items horizontally */
+  padding: 20px;
+  background-color: #ffffff; /* Changed to consistent white background */
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Form control for sorting/filtering */
+.formControl {
+  width: 200px; /* Set a specific width for form controls */
+  margin-bottom: 20px;
+}
+
+/* Ensure select dropdowns have consistent sizes */
+.select {
+  width: 100%; /* Make the select fill its parent container */
+}
+
+.select:focus {
+  border-color: #0070f3; /* Highlight color for focus */
+}
+
+/* Responsive adjustments */
+@media (max-width: 600px) {
+  .container {
+    padding: 15px;
+  }
+}
